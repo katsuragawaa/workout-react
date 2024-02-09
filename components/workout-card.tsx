@@ -1,5 +1,6 @@
+import { ChevronRight } from "lucide-react";
 import { Button } from "./ui/button";
-import { Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 interface WorkoutCardProps {
   title: string;
@@ -14,7 +15,9 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({ title, description }) 
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </div>
-        <Button>Ir</Button>
+        <Button variant="outline" size="icon">
+          <ChevronRight className="h-4 w-4" />
+        </Button>
       </CardHeader>
     </Card>
   );
