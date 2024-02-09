@@ -10,7 +10,7 @@ interface WorkoutCardProps {
 export const WorkoutCard: React.FC<WorkoutCardProps> = ({ title, description }) => {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between gap-4">
         <div className="space-y-1.5">
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

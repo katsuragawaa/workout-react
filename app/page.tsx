@@ -8,7 +8,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="container flex flex-col">
+    <main className="container flex max-w-xl flex-col">
       <h1 className="pb-10 pt-14 text-5xl font-extrabold">
         Choose
         <br />
