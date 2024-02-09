@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { WorkoutCard } from "@/components/workout-card";
 
 export default function Home() {
@@ -8,6 +6,7 @@ export default function Home() {
     { id: 2, title: "Treino B", description: "Costas, lombar e biceps" },
     { id: 3, title: "Treino C", description: "Pernas e glúteos" },
   ];
+
   return (
     <main className="container flex flex-col">
       <h1 className="pb-10 pt-14 text-5xl font-extrabold">
