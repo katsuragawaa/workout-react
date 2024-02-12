@@ -7,6 +7,7 @@ export default function Home() {
     { id: 2, title: "Treino B", description: "Costas, lombar e biceps" },
     { id: 3, title: "Treino C", description: "Pernas e glúteos" },
     { id: 4, title: "Treino D", description: "Cardio" },
+    { id: 5, title: "Treino E", description: "Glúteos intensos" },
   ];
 
   return (
