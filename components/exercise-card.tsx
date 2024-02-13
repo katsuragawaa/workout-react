@@ -1,5 +1,9 @@
+"use client";
+
 import { CheckSquare, Repeat2, Square, Weight, X } from "lucide-react";
+import { useState } from "react";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 type ExerciseCardProps = {
@@ -11,12 +15,17 @@ type ExerciseCardProps = {
     reps: number;
     weight: number;
   };
-  done: boolean;
 };
 
-export default function ExerciseCard({ exercise, done }: ExerciseCardProps) {
+export default function ExerciseCard({ exercise }: ExerciseCardProps) {
+  const [done, setDone] = useState(false);
+
+  const handleDone = () => {
+    setDone(!done);
+  };
+
   return (
-    <Card className="flex-1">
+    <Card>
       <CardHeader>
         <Badge className="w-fit" variant="outline">
           {exercise.muscle}
@@ -36,7 +45,9 @@ export default function ExerciseCard({ exercise, done }: ExerciseCardProps) {
           <Weight className="h-5 w-5" />
           <span>{exercise.weight}</span>
         </div>
-        {done ? <CheckSquare className="h-5 w-5" /> : <Square className="h-5 w-5" />}
+        <Button variant="ghost" size="icon" onClick={handleDone} className="h-5 w-5">
+          {done ? <CheckSquare /> : <Square />}
+        </Button>
       </CardContent>
     </Card>
   );
