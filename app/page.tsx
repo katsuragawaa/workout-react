@@ -6,9 +6,9 @@ import { workouts } from "@/lib/workout-mock";
 export default function Home() {
   return (
     <>
-      <header className="container flex max-w-4xl items-center justify-end pt-14">
+      <nav className="container flex max-w-4xl items-center justify-end pt-14">
         <ThemeToggle />
-      </header>
+      </nav>
 
       <main className="container flex min-h-screen max-w-xl flex-col">
         <h1 className="pb-10 pt-14 text-5xl font-extrabold">
