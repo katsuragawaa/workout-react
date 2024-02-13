@@ -41,13 +41,13 @@ export default function NewWorkout() {
 
   return (
     <>
-      <header className="container flex items-center justify-between">
+      <header className="container flex max-w-4xl items-center justify-between pt-14">
         <Link className={buttonVariants({ variant: "outline", size: "icon" })} href="/">
           <ArrowLeft className="h-4 w-4" />
         </Link>
       </header>
 
-      <main className="container flex min-h-screen max-w-xl flex-col pt-10">
+      <main className="container flex max-w-xl flex-col py-10">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -55,7 +55,7 @@ export default function NewWorkout() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-medium">Workout title</FormLabel>
+                  <FormLabel className="text-xl font-bold">Workout title</FormLabel>
                   <FormControl>
                     <Input placeholder="Treino A" {...field} />
                   </FormControl>
@@ -64,21 +64,19 @@ export default function NewWorkout() {
               )}
             />
 
-            <h3 className="text-lg font-medium">Exercises</h3>
+            <h3 className="text-xl font-bold">Exercises</h3>
 
             <div className="space-y-4">
               {exercises.map((exercise, index) => (
-                <>
-                  <div className="flex flex-row items-center justify-between" key={exercise.id}>
+                <Fragment key={exercise.id}>
+                  <div className="flex flex-row items-center justify-between">
                     <p>{exercise.name}</p>
-                    <span>
-                      <Button variant="outline" size="default">
-                        Editar
-                      </Button>
-                    </span>
+                    <Button className="w-fit" variant="outline" size="sm">
+                      Editar
+                    </Button>
                   </div>
                   <Separator />
-                </>
+                </Fragment>
               ))}
             </div>
 

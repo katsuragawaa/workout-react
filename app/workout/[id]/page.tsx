@@ -23,7 +23,7 @@ export default function Workout({ params }: WorkoutPageProps) {
 
   return (
     <>
-      <header className="container flex items-center justify-between">
+      <header className="container flex max-w-4xl items-center justify-between pt-14">
         <Link className={buttonVariants({ variant: "outline", size: "icon" })} href="/">
           <ArrowLeft className="h-4 w-4" />
         </Link>
@@ -31,7 +31,7 @@ export default function Workout({ params }: WorkoutPageProps) {
         <TimerDrawer trigger={IconTrigger} />
       </header>
 
-      <main className="container flex min-h-screen max-w-2xl flex-col pt-10">
+      <main className="container flex max-w-2xl flex-col py-10">
         <h1 className="text-5xl font-extrabold">{workout.title}</h1>
 
         <div className="grid grid-cols-1 gap-3 pt-10 md:grid-cols-2">
