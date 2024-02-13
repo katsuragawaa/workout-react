@@ -20,7 +20,6 @@ export const formSchema = z.object({
       muscle: z.string().min(2).max(20),
       sets: z.number().min(1).max(5),
       reps: z.number().min(1).max(30),
-      weight: z.number().min(1).max(500),
     }),
   ),
 });
@@ -36,7 +35,6 @@ export default function NewWorkout() {
           muscle: "",
           sets: 0,
           reps: 0,
-          weight: 0,
         },
       ],
     },
