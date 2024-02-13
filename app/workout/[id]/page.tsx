@@ -42,7 +42,7 @@ export default function WorkoutPage({ params }: WorkoutPageProps) {
 
         <TimerDrawer trigger={Trigger} />
 
-        <Link className={cn(buttonVariants({ variant: "outline" }), "mt-4 w-48 self-center")} href={`/workout/${id}`}>
+        <Link className={cn(buttonVariants({ variant: "outline" }), "mt-2 w-48 self-center")} href={`/workout/${id}`}>
           <span>Editar treino</span>
         </Link>
       </main>
