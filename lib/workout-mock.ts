@@ -4,3 +4,54 @@ export const workouts = [
   { id: 3, title: "Treino C", description: "Pernas e glúteos" },
   { id: 4, title: "Treino D", description: "Glúteos intensos" },
 ];
+
+export const exercises = [
+  {
+    id: 101,
+    name: "Supino reto",
+    muscle: "Peitoral",
+    sets: 3,
+    reps: 10,
+    weight: 20,
+  },
+  {
+    id: 102,
+    name: "Puxada frente aberta",
+    muscle: "Costas",
+    sets: 3,
+    reps: 10,
+    weight: 34,
+  },
+  {
+    id: 103,
+    name: "Leg press",
+    muscle: "Pernas",
+    sets: 3,
+    reps: 10,
+    weight: 100,
+  },
+  {
+    id: 104,
+    name: "Agachamento",
+    muscle: "Pernas",
+    sets: 3,
+    reps: 10,
+    weight: 60,
+  },
+  {
+    id: 105,
+    name: "Elevação lateral",
+    muscle: "Ombros",
+    sets: 3,
+    reps: 10,
+    weight: 20,
+  },
+  {
+    id: 106,
+    name: "Biceps curl",
+    muscle: "Biceps",
+    sets: 3,
+    reps: 10,
+    weight: 8,
+  },
+];
