@@ -1,16 +1,18 @@
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { WorkoutCard } from "@/components/workout-card";
+import { cn } from "@/lib/utils";
 import { workouts } from "@/lib/workout-mock";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      <nav className="container flex max-w-4xl items-center justify-end pt-14">
+      <nav className="container flex items-center justify-end">
         <ThemeToggle />
       </nav>
 
-      <main className="container flex min-h-screen max-w-xl flex-col py-14">
+      <main className="container flex min-h-screen max-w-xl flex-col pt-14">
         <h1 className="pb-10 text-5xl font-extrabold">
           Choose
           <br />
@@ -25,7 +27,9 @@ export default function Home() {
           ))}
         </section>
 
-        <Button className="mt-10">New Workout</Button>
+        <Link href="/workout/new" className={cn(buttonVariants(), "mt-10")}>
+          New workout
+        </Link>
       </main>
     </>
   );
