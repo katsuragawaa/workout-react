@@ -25,7 +25,7 @@ export default function Home() {
           ))}
         </section>
 
-        <Button variant="outline" className="mt-28 self-center px-14">
+        <Button className="mt-28 self-center px-14">
           New Workout
         </Button>
       </main>
