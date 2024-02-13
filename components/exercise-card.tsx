@@ -20,7 +20,7 @@ type ExerciseCardProps = {
 export default function ExerciseCard({ exercise }: ExerciseCardProps) {
   const [done, setDone] = useState(false);
 
-  const handleDone = () => {
+  const toggleDone = () => {
     setDone(!done);
   };
 
@@ -45,7 +45,7 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
           <Weight className="h-5 w-5" />
           <span>{exercise.weight}</span>
         </div>
-        <Button variant="ghost" size="icon" onClick={handleDone} className="h-5 w-5">
+        <Button variant="ghost" size="icon" onClick={toggleDone} className="h-5 w-5">
           {done ? <CheckSquare /> : <Square />}
         </Button>
       </CardContent>
