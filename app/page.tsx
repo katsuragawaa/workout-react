@@ -10,8 +10,8 @@ export default function Home() {
         <ThemeToggle />
       </nav>
 
-      <main className="container flex min-h-screen max-w-xl flex-col">
-        <h1 className="pb-10 pt-14 text-5xl font-extrabold">
+      <main className="container flex min-h-screen max-w-xl flex-col py-14">
+        <h1 className="pb-10 text-5xl font-extrabold">
           Choose
           <br />
           Your
@@ -25,7 +25,7 @@ export default function Home() {
           ))}
         </section>
 
-        <Button variant="outline" className="mb-14 mt-28 self-center px-14">
+        <Button variant="outline" className="mt-28 self-center px-14">
           New Workout
         </Button>
       </main>

@@ -20,8 +20,8 @@ export default function WorkoutPage({ params }: WorkoutPageProps) {
         </Link>
       </nav>
 
-      <main className="container flex min-h-screen max-w-2xl flex-col">
-        <h1 className="pb-10 pt-14 text-5xl font-extrabold">{workout.title}</h1>
+      <main className="container flex min-h-screen max-w-2xl flex-col py-14">
+        <h1 className="pb-10 text-5xl font-extrabold">{workout.title}</h1>
 
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {exercises.map((exercise) => (
