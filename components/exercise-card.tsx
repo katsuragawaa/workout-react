@@ -17,7 +17,7 @@ type ExerciseCardProps = {
   };
 };
 
-export default function ExerciseCard({ exercise }: ExerciseCardProps) {
+export function ExerciseCard({ exercise }: ExerciseCardProps) {
   const [done, setDone] = useState(false);
 
   const toggleDone = () => {

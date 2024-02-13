@@ -1,8 +1,5 @@
-import ExerciseCard from "@/components/exercise-card";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExerciseCard } from "@/components/exercise-card";
 import { exercises, workouts } from "@/lib/workout-mock";
-import { CheckSquare, Repeat2, Square, Weight, X } from "lucide-react";
 
 type WorkoutPageProps = {
   params: { id: string };

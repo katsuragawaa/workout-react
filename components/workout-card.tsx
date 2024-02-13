@@ -4,12 +4,15 @@ import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import Link from "next/link";
 
 interface WorkoutCardProps {
-  id: number;
-  title: string;
-  description: string;
+  workout: {
+    id: number;
+    title: string;
+    description: string;
+  };
 }
 
-export const WorkoutCard: React.FC<WorkoutCardProps> = ({ id, title, description }) => {
+export function WorkoutCard({ workout }: WorkoutCardProps) {
+  const { id, title, description } = workout;
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-4">
@@ -24,4 +27,4 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({ id, title, description
       </CardHeader>
     </Card>
   );
-};
+}

@@ -21,7 +21,7 @@ export default function Home() {
 
         <section className="flex flex-col gap-4">
           {workouts.map((workout) => (
-            <WorkoutCard key={workout.id} id={workout.id} title={workout.title} description={workout.description} />
+            <WorkoutCard key={workout.id} workout={workout} />
           ))}
         </section>
 
