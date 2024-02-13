@@ -4,6 +4,8 @@ import { MuscleCombobox } from "@/components/muscle-combobox";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { exercises } from "@/lib/workout-mock";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -11,7 +13,7 @@ import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export const formSchema = z.object({
+const formSchema = z.object({
   title: z.string().min(2).max(50),
   exercises: z.array(
     z.object({
@@ -29,14 +31,7 @@ export default function NewWorkout() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      exercises: [
-        {
-          name: "",
-          muscle: "",
-          sets: 0,
-          reps: 0,
-        },
-      ],
+      exercises: exercises,
     },
   });
 
@@ -60,7 +55,7 @@ export default function NewWorkout() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Workout title</FormLabel>
+                  <FormLabel className="text-lg font-medium">Workout title</FormLabel>
                   <FormControl>
                     <Input placeholder="Treino A" {...field} />
                   </FormControl>
@@ -68,6 +63,26 @@ export default function NewWorkout() {
                 </FormItem>
               )}
             />
+
+            <h3 className="text-lg font-medium">Exercises</h3>
+
+            <div className="space-y-4">
+              {exercises.map((exercise, index) => (
+                <>
+                  <div className="flex flex-row items-center justify-between" key={exercise.id}>
+                    <p>{exercise.name}</p>
+                    <span>
+                      <Button variant="outline" size="default">
+                        Editar
+                      </Button>
+                    </span>
+                  </div>
+                  <Separator />
+                </>
+              ))}
+            </div>
+
+            <hr />
 
             {form.getValues("exercises").map((exercise, index) => (
               <Fragment key={exercise.id || index}>

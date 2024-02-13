@@ -1,4 +1,3 @@
-import { formSchema } from "@/app/workout/new/page";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { FormControl } from "@/components/ui/form";
@@ -30,6 +29,20 @@ const muscles = [
   { value: "stretching", label: "Alongamento" },
   { value: "other", label: "Outro" },
 ] as const;
+
+// TODO: delete
+const formSchema = z.object({
+  title: z.string().min(2).max(50),
+  exercises: z.array(
+    z.object({
+      id: z.number().optional(),
+      name: z.string().min(2).max(20),
+      muscle: z.string().min(2).max(20),
+      sets: z.number().min(1).max(5),
+      reps: z.number().min(1).max(30),
+    }),
+  ),
+});
 
 type MuscleComboboxProps = {
   value: string;
