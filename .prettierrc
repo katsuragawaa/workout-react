@@ -5,6 +5,5 @@
   "semi": true,
   "singleQuote": false,
   "jsxSingleQuote": false,
-  "experimentalTernaries": true,
   "plugins": ["prettier-plugin-tailwindcss"]
 }
