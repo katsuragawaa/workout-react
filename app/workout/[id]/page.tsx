@@ -10,7 +10,7 @@ type WorkoutPageProps = {
   params: { id: string };
 };
 
-export default function WorkoutPage({ params }: WorkoutPageProps) {
+export default function Workout({ params }: WorkoutPageProps) {
   const { id } = params;
   const workout = workouts.find((workout) => workout.id === Number(id)) || { title: "Workout not found" };
 
