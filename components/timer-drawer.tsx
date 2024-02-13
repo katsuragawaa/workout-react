@@ -11,39 +11,73 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Minus, Plus } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 
 type TimerDrawerProps = {
   trigger: React.ReactNode;
 };
 
+const formatTime = (time: number) => {
+  const minutes = Math.floor(time / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = (time % 60).toString().padStart(2, "0");
+  return `${minutes}:${seconds}`;
+};
+
 export function TimerDrawer({ trigger }: TimerDrawerProps) {
+  const initialTime = 120;
+  const [time, setTime] = useState(initialTime);
+  const [isRunning, setIsRunning] = useState(false);
+  const timerId = useRef<NodeJS.Timeout | null>(null);
+
+  const startTimer = useCallback(() => {
+    if (timerId.current) {
+      clearInterval(timerId.current);
+    }
+
+    setTime(initialTime);
+
+    timerId.current = setInterval(() => {
+      setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+    }, 1000);
+
+    setIsRunning(true);
+  }, [initialTime]);
+
+  const pauseTimer = useCallback(() => {
+    if (timerId.current) {
+      clearInterval(timerId.current);
+      timerId.current = null;
+    }
+
+    setIsRunning(false);
+  }, []);
+
+  const resumeTimer = useCallback(() => {
+    if (!timerId.current) {
+      timerId.current = setInterval(() => {
+        setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      }, 1000);
+    }
+
+    setIsRunning(true);
+  }, []);
+
   return (
     <Drawer>
-      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerTrigger asChild onClick={startTimer}>
+        {trigger}
+      </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle>Descanso</DrawerTitle>
             <DrawerDescription>Pausa até a próxima atividade</DrawerDescription>
           </DrawerHeader>
-          <div className="p-4">
-            <div className="flex items-center justify-center space-x-2">
-              <Button variant="outline" size="icon" className="h-8 w-8 shrink-0 rounded-full">
-                <Minus className="h-4 w-4" />
-                <span className="sr-only">Decrease</span>
-              </Button>
-              <div className="flex-1 text-center">
-                <div className="text-7xl font-bold tracking-tighter">02:00</div>
-              </div>
-              <Button variant="outline" size="icon" className="h-8 w-8 shrink-0 rounded-full">
-                <Plus className="h-4 w-4" />
-                <span className="sr-only">Increase</span>
-              </Button>
-            </div>
-          </div>
+          <div className="p-4 text-center text-7xl font-bold tracking-tighter">{formatTime(time)}</div>
           <DrawerFooter>
-            <Button>Pausar</Button>
+            {isRunning ? <Button onClick={pauseTimer}>Pausar</Button> : <Button onClick={resumeTimer}>Retomar</Button>}
             <DrawerClose asChild>
               <Button variant="outline">Fechar</Button>
             </DrawerClose>
