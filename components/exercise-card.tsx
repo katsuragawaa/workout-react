@@ -25,7 +25,7 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
   };
 
   return (
-    <Card>
+    <Card style={{ opacity: done ? 0.5 : 1 }}>
       <CardHeader>
         <Badge className="w-fit" variant="outline">
           {exercise.muscle}
