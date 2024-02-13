@@ -1,16 +1,9 @@
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { WorkoutCard } from "@/components/workout-card";
+import { workouts } from "@/lib/workout-mock";
 
 export default function Home() {
-  const workouts = [
-    { id: 1, title: "Treino A", description: "Peito, ombros, triceps e abs" },
-    { id: 2, title: "Treino B", description: "Costas, lombar e biceps" },
-    { id: 3, title: "Treino C", description: "Pernas e glúteos" },
-    { id: 4, title: "Treino D", description: "Cardio" },
-    { id: 5, title: "Treino E", description: "Glúteos intensos" },
-  ];
-
   return (
     <>
       <header className="container flex max-w-4xl items-center justify-end pt-14">
@@ -28,7 +21,7 @@ export default function Home() {
 
         <section className="flex flex-col gap-4">
           {workouts.map((workout) => (
-            <WorkoutCard key={workout.id} title={workout.title} description={workout.description} />
+            <WorkoutCard key={workout.id} id={workout.id} title={workout.title} description={workout.description} />
           ))}
         </section>
 

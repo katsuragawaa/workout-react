@@ -1,13 +1,15 @@
 import { ChevronRight } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import Link from "next/link";
 
 interface WorkoutCardProps {
+  id: number;
   title: string;
   description: string;
 }
 
-export const WorkoutCard: React.FC<WorkoutCardProps> = ({ title, description }) => {
+export const WorkoutCard: React.FC<WorkoutCardProps> = ({ id, title, description }) => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-4">
@@ -15,9 +17,10 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({ title, description }) 
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </div>
-        <Button variant="outline" size="icon">
+
+        <Link className={buttonVariants({ variant: "outline", size: "icon" })} href={`/workout/${id}`}>
           <ChevronRight className="h-4 w-4" />
-        </Button>
+        </Link>
       </CardHeader>
     </Card>
   );
