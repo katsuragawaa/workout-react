@@ -14,7 +14,7 @@ export default function WorkoutPage({ params }: WorkoutPageProps) {
   const { id } = params;
   const workout = workouts.find((workout) => workout.id === Number(id)) || { title: "Workout not found" };
 
-  const Trigger = <Button className="mt-14 w-48 self-center">Descansar</Button>;
+  const Trigger = <Button className="mt-10">Descansar</Button>;
   const IconTrigger = (
     <Button size="icon">
       <Timer className="h-4 w-4" />
@@ -42,7 +42,7 @@ export default function WorkoutPage({ params }: WorkoutPageProps) {
 
         <TimerDrawer trigger={Trigger} />
 
-        <Link className={cn(buttonVariants({ variant: "outline" }), "mt-2 w-48 self-center")} href={`/workout/${id}`}>
+        <Link className={cn(buttonVariants({ variant: "outline" }), "mt-2")} href={`/workout/${id}`}>
           <span>Editar treino</span>
         </Link>
       </main>

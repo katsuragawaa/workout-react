@@ -25,7 +25,7 @@ export default function Home() {
           ))}
         </section>
 
-        <Button className="mt-14 w-48 self-center">New Workout</Button>
+        <Button className="mt-10">New Workout</Button>
       </main>
     </>
   );
