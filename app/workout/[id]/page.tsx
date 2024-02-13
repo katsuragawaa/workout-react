@@ -1,7 +1,7 @@
 import { ExerciseCard } from "@/components/exercise-card";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { exercises, workouts } from "@/lib/workout-mock";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Timer } from "lucide-react";
 import Link from "next/link";
 
 type WorkoutPageProps = {
@@ -14,10 +14,14 @@ export default function WorkoutPage({ params }: WorkoutPageProps) {
 
   return (
     <>
-      <nav className="container max-w-4xl pt-14">
+      <nav className="container flex max-w-4xl items-center justify-between pt-14">
         <Link className={buttonVariants({ variant: "outline", size: "icon" })} href="/">
           <ArrowLeft className="h-4 w-4" />
         </Link>
+
+        <Button size="icon">
+          <Timer className="h-4 w-4" />
+        </Button>
       </nav>
 
       <main className="container flex min-h-screen max-w-2xl flex-col py-14">
@@ -28,6 +32,8 @@ export default function WorkoutPage({ params }: WorkoutPageProps) {
             <ExerciseCard key={exercise.id} exercise={exercise} />
           ))}
         </div>
+
+        <Button className="mt-14 self-center px-14">Descansar</Button>
       </main>
     </>
   );
