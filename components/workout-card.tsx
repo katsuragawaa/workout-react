@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
@@ -21,7 +22,7 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
           <CardDescription>{description}</CardDescription>
         </div>
 
-        <Link className={buttonVariants({ variant: "outline", size: "icon" })} href={`/workout/${id}`}>
+        <Link className={cn(buttonVariants({ variant: "outline", size: "icon" }), "min-w-10")} href={`/workout/${id}`}>
           <ChevronRight className="h-4 w-4" />
         </Link>
       </CardHeader>
