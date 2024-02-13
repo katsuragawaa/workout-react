@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
-import { Button, buttonVariants } from "./ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import Link from "next/link";
+import { buttonVariants } from "./ui/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 interface WorkoutCardProps {
   workout: {
