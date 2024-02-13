@@ -8,11 +8,11 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <nav className="container flex items-center justify-end">
+      <header className="container flex items-center justify-end">
         <ThemeToggle />
-      </nav>
+      </header>
 
-      <main className="container flex min-h-screen max-w-xl flex-col pt-14">
+      <main className="container flex min-h-screen max-w-xl flex-col pt-10">
         <h1 className="pb-10 text-5xl font-extrabold">
           Choose
           <br />

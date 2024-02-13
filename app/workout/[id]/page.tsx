@@ -23,15 +23,15 @@ export default function Workout({ params }: WorkoutPageProps) {
 
   return (
     <>
-      <nav className="container flex max-w-4xl items-center justify-between pt-14">
+      <header className="container flex items-center justify-between">
         <Link className={buttonVariants({ variant: "outline", size: "icon" })} href="/">
           <ArrowLeft className="h-4 w-4" />
         </Link>
 
         <TimerDrawer trigger={IconTrigger} />
-      </nav>
+      </header>
 
-      <main className="container flex min-h-screen max-w-2xl flex-col py-14">
+      <main className="container flex min-h-screen max-w-2xl flex-col pt-10">
         <h1 className="text-5xl font-extrabold">{workout.title}</h1>
 
         <div className="grid grid-cols-1 gap-3 pt-10 md:grid-cols-2">
