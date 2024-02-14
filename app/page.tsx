@@ -28,7 +28,7 @@ export default function Home() {
         </section>
 
         <Link href="/workout/new" className={cn(buttonVariants(), "mt-10")}>
-          New workout
+          Novo Treino
         </Link>
       </main>
     </>
