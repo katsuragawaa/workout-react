@@ -2,7 +2,7 @@ type Workout = {
   id: number;
   name: string;
   description: string;
-  exercises: Exercise[];
+  // exercises: Exercise[];
 };
 
 type Exercise = {
