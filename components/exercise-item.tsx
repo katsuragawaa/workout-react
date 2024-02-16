@@ -1,19 +1,14 @@
+import { Exercise } from "@/types";
 import { Beef, Minus, Pencil, Repeat2, X } from "lucide-react";
 import { Button } from "./ui/button";
 
-type Exercise = {
-  id?: number;
-  name: string;
-  muscle: string;
-  sets: number;
-  reps: number;
-};
+type ExerciseData = Omit<Exercise, "id">;
 
 type ExerciseItemProps = {
-  exercise: Exercise;
+  exercise: ExerciseData;
 };
 
-const ExerciseDetails = ({ name, muscle, sets, reps }: Exercise) => (
+const ExerciseDetails = ({ name, muscle, sets, reps }: ExerciseData) => (
   <div className="space-y-2">
     <h3 className="text-lg font-medium leading-5">{name}</h3>
     <div className="flex items-center text-xs">
