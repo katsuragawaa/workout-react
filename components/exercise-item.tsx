@@ -1,7 +1,7 @@
 import { Exercise } from "@/types";
 import { Beef, Minus, Pencil, Repeat2, X } from "lucide-react";
-import { Button } from "./ui/button";
 import { ExerciseDialogForm } from "./exercise-dialog-form";
+import { Button } from "./ui/button";
 
 type ExerciseData = Omit<Exercise, "id">;
 
