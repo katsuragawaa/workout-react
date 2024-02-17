@@ -35,6 +35,7 @@ export const WorkoutDialogForm = ({ open, setOpen, workout }: WorkoutDialogFormP
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
+    form.reset();
     setOpen(false);
   };
 
