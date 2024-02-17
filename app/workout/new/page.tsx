@@ -8,7 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
-import { exercises } from "@/lib/workout-mock";
+import { exercises, workouts } from "@/lib/workout-mock";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -141,27 +141,18 @@ export default function NewWorkout() {
         <p className="pb-6 text-sm text-muted-foreground">Planeje seu treco</p>
 
         <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="pb-4 text-2xl font-bold">Treino A</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
-              {exercises.map((exercise) => (
-                <ExerciseItem key={exercise.id} exercise={exercise} />
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger className="pb-4 text-2xl font-bold">Treino A</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
-              {exercises.map((exercise) => (
-                <ExerciseCard key={exercise.id} exercise={exercise} />
-              ))}
-            </AccordionContent>
-          </AccordionItem>
+          {workouts.map((workout) => (
+            <AccordionItem key={workout.id || workout.name} value={workout.name}>
+              <AccordionTrigger className="pb-4 text-start text-2xl font-bold">{workout.name}</AccordionTrigger>
+              <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {exercises.map((exercise) => (
+                  <ExerciseItem key={exercise.id} exercise={exercise} />
+                ))}
+                <Button variant="secondary">Novo exercício</Button>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
         </Accordion>
-
-        <Button variant="outline" className="mt-10 w-full">
-          Novo exercício
-        </Button>
 
         <WorkoutDialogForm />
       </main>
