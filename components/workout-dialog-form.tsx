@@ -32,10 +32,6 @@ export function WorkoutDialogForm() {
     setIsOpen(true);
   }
 
-  function closeDialog() {
-    setIsOpen(false);
-  }
-
   function toggleDialog(open: boolean) {
     open ? setIsOpen(true) : setIsOpen(false);
   }
@@ -72,9 +68,6 @@ export function WorkoutDialogForm() {
             </div>
             <DialogFooter>
               <Button type="submit">Salvar</Button>
-              <Button type="button" variant="secondary" onClick={closeDialog}>
-                Fechar
-              </Button>
             </DialogFooter>
           </form>
         </Form>
