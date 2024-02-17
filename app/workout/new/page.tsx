@@ -1,8 +1,9 @@
 "use client";
 
+import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
 import { ExerciseItem } from "@/components/exercise-item";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
 import { exercises, workouts } from "@/lib/workout-mock";
 import { ArrowLeft } from "lucide-react";
@@ -29,7 +30,8 @@ export default function NewWorkout() {
                 {exercises.map((exercise) => (
                   <ExerciseItem key={exercise.id} exercise={exercise} />
                 ))}
-                <Button variant="secondary">Novo exercício</Button>
+
+                <ExerciseDialogForm />
               </AccordionContent>
             </AccordionItem>
           ))}
