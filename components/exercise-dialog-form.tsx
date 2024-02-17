@@ -1,12 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Exercise } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { MuscleCombobox } from "./muscle-combobox";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+
+type ExerciseData = Omit<Exercise, "id">;
+
+type ExerciseDialogFormProp = {
+  exercise?: ExerciseData;
+  children: React.ReactNode;
+};
 
 export const exerciseFormSchema = z.object({
   name: z.string().min(2).max(50),
@@ -15,15 +23,19 @@ export const exerciseFormSchema = z.object({
   reps: z.number().min(1).max(30),
 });
 
-export const ExerciseDialogForm = () => {
+const defaultExercise = {
+  name: "",
+  muscle: "",
+  sets: 0,
+  reps: 0,
+};
+
+export const ExerciseDialogForm = ({ exercise, children }: ExerciseDialogFormProp) => {
+  const { name, muscle, sets, reps } = exercise || defaultExercise;
+
   const form = useForm<z.infer<typeof exerciseFormSchema>>({
     resolver: zodResolver(exerciseFormSchema),
-    defaultValues: {
-      name: "",
-      muscle: "",
-      sets: 0,
-      reps: 0,
-    },
+    defaultValues: { name, muscle, sets, reps },
   });
 
   const [open, setOpen] = useState(false);
@@ -39,18 +51,14 @@ export const ExerciseDialogForm = () => {
 
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
-      <DialogTrigger asChild>
-        <Button variant="secondary" className="md:col-span-2">
-          Novo exercício
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(addExercise)} className="space-y-6">
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium">Novo exercício</h3>
-                <p className="text-sm text-muted-foreground">Plan your workout.</p>
+                <p className="text-sm text-muted-foreground">Adicione atividades ao seu treino.</p>
               </div>
 
               <FormField
@@ -105,6 +113,7 @@ export const ExerciseDialogForm = () => {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="reps"
