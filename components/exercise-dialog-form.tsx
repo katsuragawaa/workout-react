@@ -11,9 +11,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 
 type ExerciseData = Omit<Exercise, "id">;
 
-type ExerciseDialogFormProp = {
+type ExerciseDialogFormProps = {
   exercise?: ExerciseData;
-  children: React.ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 };
 
 export const exerciseFormSchema = z.object({
@@ -30,28 +31,27 @@ const defaultExercise = {
   reps: 0,
 };
 
-export const ExerciseDialogForm = ({ exercise, children }: ExerciseDialogFormProp) => {
+export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFormProps) => {
   const { name, muscle, sets, reps } = exercise || defaultExercise;
 
   const form = useForm<z.infer<typeof exerciseFormSchema>>({
     resolver: zodResolver(exerciseFormSchema),
-    defaultValues: { name, muscle, sets, reps },
+    values: { name, muscle, sets, reps },
   });
 
-  const [open, setOpen] = useState(false);
-
   const toggleOpen = (open: boolean) => {
+    form.clearErrors();
     setOpen(open);
   };
 
   const onSubmit = () => {
     console.log("addExercise");
+    form.reset();
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
