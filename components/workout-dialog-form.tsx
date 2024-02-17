@@ -4,21 +4,33 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Workout } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+type WorkoutData = Omit<Workout, "id">;
+
+type WorkoutDialogFormProps = {
+  workout?: WorkoutData;
+  children: ReactNode;
+};
+
 const formSchema = z.object({
-  title: z.string().min(2).max(50),
+  name: z.string().min(2).max(50),
 });
 
-export const WorkoutDialogForm = () => {
+const defaultWorkout = {
+  name: "",
+};
+
+export const WorkoutDialogForm = ({ workout, children }: WorkoutDialogFormProps) => {
+  const { name } = workout || defaultWorkout;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-    },
+    defaultValues: { name },
   });
 
   const [open, setOpen] = useState(false);
@@ -34,11 +46,7 @@ export const WorkoutDialogForm = () => {
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      <DialogTrigger asChild>
-        <Button className="w-fll mt-10" onClick={() => setOpen(true)}>
-          Novo workout
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -50,7 +58,7 @@ export const WorkoutDialogForm = () => {
 
               <FormField
                 control={form.control}
-                name="title"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Título</FormLabel>

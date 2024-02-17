@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button, buttonVariants } from "@/components/ui/button";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
 import { exercises, workouts } from "@/lib/workout-mock";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PenBox } from "lucide-react";
 import Link from "next/link";
 
 export default function NewWorkout() {
@@ -25,7 +25,18 @@ export default function NewWorkout() {
         <Accordion type="single" collapsible>
           {workouts.map((workout) => (
             <AccordionItem key={workout.id || workout.name} value={workout.name}>
-              <AccordionTrigger className="pb-4 text-start text-2xl font-bold">{workout.name}</AccordionTrigger>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <AccordionTrigger className="w-full pb-4 text-start text-2xl font-bold">
+                    {workout.name}
+                  </AccordionTrigger>
+                </div>
+                <WorkoutDialogForm workout={workout}>
+                  <Button variant="ghost" size="icon">
+                    <PenBox className="h-4 w-4" />
+                  </Button>
+                </WorkoutDialogForm>
+              </div>
               <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 {exercises.map((exercise) => (
                   <ExerciseItem key={exercise.id} exercise={exercise} />
@@ -41,7 +52,9 @@ export default function NewWorkout() {
           ))}
         </Accordion>
 
-        <WorkoutDialogForm />
+        <WorkoutDialogForm>
+          <Button className="w-fll mt-10">Novo workout</Button>
+        </WorkoutDialogForm>
       </main>
     </>
   );
