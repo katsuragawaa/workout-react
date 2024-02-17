@@ -13,7 +13,7 @@ const formSchema = z.object({
   title: z.string().min(2).max(50),
 });
 
-export function WorkoutDialogForm() {
+export const WorkoutDialogForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -21,25 +21,21 @@ export function WorkoutDialogForm() {
     },
   });
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    setIsOpen(false);
-  }
+    setOpen(false);
+  };
 
-  function openDialog() {
-    setIsOpen(true);
-  }
-
-  function toggleDialog(open: boolean) {
-    open ? setIsOpen(true) : setIsOpen(false);
-  }
+  const toggleDialog = (open: boolean) => {
+    setOpen(open);
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={toggleDialog}>
+    <Dialog open={open} onOpenChange={toggleDialog}>
       <DialogTrigger asChild>
-        <Button className="w-fll mt-10" onClick={openDialog}>
+        <Button className="w-fll mt-10" onClick={() => setOpen(true)}>
           Novo workout
         </Button>
       </DialogTrigger>
@@ -74,4 +70,4 @@ export function WorkoutDialogForm() {
       </DialogContent>
     </Dialog>
   );
-}
+};
