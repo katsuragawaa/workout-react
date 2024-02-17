@@ -40,7 +40,9 @@ export const ExerciseDialogForm = () => {
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary">Novo exercício</Button>
+        <Button variant="secondary" className="md:col-span-2">
+          Novo exercício
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
