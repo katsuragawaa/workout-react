@@ -5,12 +5,16 @@ import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
 import { ExerciseItem } from "@/components/exercise-item";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
 import { exercises, workouts } from "@/lib/workout-mock";
 import { Workout } from "@/types";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { ArrowLeft, MoreVertical } from "lucide-react";
+import { ArrowLeft, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -72,8 +76,14 @@ export default function NewWorkout() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => handleEdit(workout)}>Editar</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDelete(workout)}>Deletar</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleEdit(workout)} className="flex items-center gap-2">
+                      <Pencil className="h-3 w-3" />
+                      Editar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDelete(workout)} className="flex items-center gap-2">
+                      <Trash2 className="h-3 w-3" />
+                      Deletar
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
