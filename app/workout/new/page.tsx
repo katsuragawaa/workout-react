@@ -19,17 +19,18 @@ type WorkoutData = Omit<Workout, "id" | "description">;
 const defaultWorkout = { name: "" };
 
 export default function NewWorkout() {
-  const [open, setOpen] = useState(false);
+  const [openWorkoutForm, setOpenWorkoutForm] = useState(false);
+  const [openExerciseForm, setOpenExerciseForm] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData>(defaultWorkout);
 
   const handleEdit = (workout: WorkoutData) => {
-    setOpen(true);
+    setOpenWorkoutForm(true);
     setSelectedWorkout(workout);
   };
 
   const handleNew = () => {
-    setOpen(true);
+    setOpenWorkoutForm(true);
     setSelectedWorkout(defaultWorkout);
   };
 
@@ -81,21 +82,20 @@ export default function NewWorkout() {
                   <ExerciseItem key={exercise.id} exercise={exercise} />
                 ))}
 
-                <ExerciseDialogForm>
-                  <Button variant="secondary" className="md:col-span-2">
-                    Novo exercício
-                  </Button>
-                </ExerciseDialogForm>
+                <Button onClick={() => setOpenExerciseForm(true)} variant="secondary" className="md:col-span-2">
+                  Novo exercício
+                </Button>
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
 
-        <Button onClick={handleNew} className="w-fll mt-10">
+        <Button onClick={handleNew} className="mt-10">
           Novo treino
         </Button>
 
-        <WorkoutDialogForm open={open} setOpen={setOpen} workout={selectedWorkout} />
+        <WorkoutDialogForm open={openWorkoutForm} setOpen={setOpenWorkoutForm} workout={selectedWorkout} />
+        <ExerciseDialogForm open={openExerciseForm} setOpen={setOpenExerciseForm} />
         <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
       </main>
     </>

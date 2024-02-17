@@ -1,7 +1,10 @@
 import { Exercise } from "@/types";
-import { Beef, Minus, Pencil, Repeat2, X } from "lucide-react";
+import { Beef, Minus, MoreVertical, Pencil, Repeat2, Trash2, X } from "lucide-react";
 import { ExerciseDialogForm } from "./exercise-dialog-form";
 import { Button } from "./ui/button";
+import { DeleteAlertDialog } from "./delete-alert-dialog";
+import { useState } from "react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 type ExerciseData = Omit<Exercise, "id">;
 
@@ -31,15 +34,39 @@ const ExerciseDetails = ({ name, muscle, sets, reps }: ExerciseData) => (
 );
 
 export const ExerciseItem = ({ exercise }: ExerciseItemProps) => {
+  const [openForm, setOpenForm] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const confirmDelete = () => {
+    console.log("delete exercise");
+  };
+
   return (
     <div className="flex flex-col justify-center rounded-md border p-4">
       <div className="flex items-center justify-between gap-4">
         <ExerciseDetails {...exercise} />
-        <ExerciseDialogForm exercise={exercise}>
-          <Button variant="secondary" size="icon" className="w-10 min-w-10">
-            <Pencil className="h-4 w-4" />
-          </Button>
-        </ExerciseDialogForm>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="min-w-10">
+              <MoreVertical className="h-4 w-4" />
+              <span className="sr-only">More</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => setOpenForm(true)} className="flex items-center gap-2">
+              <Pencil className="h-3 w-3" />
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setOpenAlert(true)} className="flex items-center gap-2">
+              <Trash2 className="h-3 w-3" />
+              Deletar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <ExerciseDialogForm open={openForm} setOpen={setOpenForm} exercise={exercise} />
+        <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
       </div>
     </div>
   );
