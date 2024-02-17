@@ -1,15 +1,46 @@
 "use client";
 
+import { DeleteAlertDialog } from "@/components/delete-alert-dialog";
 import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
 import { ExerciseItem } from "@/components/exercise-item";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
 import { exercises, workouts } from "@/lib/workout-mock";
-import { ArrowLeft, PenBox } from "lucide-react";
+import { Workout } from "@/types";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { ArrowLeft, MoreVertical } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+
+type WorkoutData = Omit<Workout, "id" | "description">;
+
+const defaultWorkout = { name: "" };
 
 export default function NewWorkout() {
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData>(defaultWorkout);
+
+  const handleEdit = (workout: WorkoutData) => {
+    setOpen(true);
+    setSelectedWorkout(workout);
+  };
+
+  const handleNew = () => {
+    setOpen(true);
+    setSelectedWorkout(defaultWorkout);
+  };
+
+  const handleDelete = (workout: WorkoutData) => {
+    setOpenAlert(true);
+  };
+
+  const confirmDelete = () => {
+    console.log("delete");
+  };
+
   return (
     <>
       <header className="container flex max-w-4xl items-center justify-between pt-14">
@@ -31,11 +62,19 @@ export default function NewWorkout() {
                     {workout.name}
                   </AccordionTrigger>
                 </div>
-                <WorkoutDialogForm workout={workout}>
-                  <Button variant="ghost" size="icon">
-                    <PenBox className="h-4 w-4" />
-                  </Button>
-                </WorkoutDialogForm>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <MoreVertical className="h-4 w-4" />
+                      <span className="sr-only">More</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => handleEdit(workout)}>Editar</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDelete(workout)}>Deletar</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 {exercises.map((exercise) => (
@@ -52,9 +91,12 @@ export default function NewWorkout() {
           ))}
         </Accordion>
 
-        <WorkoutDialogForm>
-          <Button className="w-fll mt-10">Novo workout</Button>
-        </WorkoutDialogForm>
+        <Button onClick={handleNew} className="w-fll mt-10">
+          Novo treino
+        </Button>
+
+        <WorkoutDialogForm open={open} setOpen={setOpen} workout={selectedWorkout} />
+        <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
       </main>
     </>
   );
