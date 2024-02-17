@@ -1,6 +1,7 @@
 import { Exercise } from "@/types";
 import { Beef, Minus, Pencil, Repeat2, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { ExerciseDialogForm } from "./exercise-dialog-form";
 
 type ExerciseData = Omit<Exercise, "id">;
 
@@ -29,18 +30,16 @@ const ExerciseDetails = ({ name, muscle, sets, reps }: ExerciseData) => (
   </div>
 );
 
-const EditButton = () => (
-  <Button variant="secondary" size="icon" className="w-10 min-w-10">
-    <Pencil className="h-4 w-4" />
-  </Button>
-);
-
 export const ExerciseItem = ({ exercise }: ExerciseItemProps) => {
   return (
     <div className="flex flex-col justify-center rounded-md border p-4">
       <div className="flex items-center justify-between gap-4">
         <ExerciseDetails {...exercise} />
-        <EditButton />
+        <ExerciseDialogForm exercise={exercise}>
+          <Button variant="secondary" size="icon" className="w-10 min-w-10">
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </ExerciseDialogForm>
       </div>
     </div>
   );
