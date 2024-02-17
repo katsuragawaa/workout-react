@@ -33,14 +33,15 @@ export const WorkoutDialogForm = ({ open, setOpen, workout }: WorkoutDialogFormP
     values: { name },
   });
 
+  const toggleDialog = (open: boolean) => {
+    form.clearErrors();
+    setOpen(open);
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
     form.reset();
     setOpen(false);
-  };
-
-  const toggleDialog = (open: boolean) => {
-    setOpen(open);
   };
 
   return (
