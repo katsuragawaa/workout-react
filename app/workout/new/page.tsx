@@ -3,7 +3,7 @@
 import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
 import { ExerciseItem } from "@/components/exercise-item";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
 import { exercises, workouts } from "@/lib/workout-mock";
 import { ArrowLeft } from "lucide-react";
@@ -31,7 +31,11 @@ export default function NewWorkout() {
                   <ExerciseItem key={exercise.id} exercise={exercise} />
                 ))}
 
-                <ExerciseDialogForm />
+                <ExerciseDialogForm>
+                  <Button variant="secondary" className="md:col-span-2">
+                    Novo exercício
+                  </Button>
+                </ExerciseDialogForm>
               </AccordionContent>
             </AccordionItem>
           ))}
