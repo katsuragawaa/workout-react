@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { UseFormSetValue } from "react-hook-form";
 import { z } from "zod";
+import { formSchema } from "./exercise-dialog-form";
 import { ScrollArea } from "./ui/scroll-area";
 
 const muscles = [
@@ -30,20 +31,6 @@ const muscles = [
   { value: "other", label: "Outro" },
 ] as const;
 
-// TODO: delete
-const formSchema = z.object({
-  title: z.string().min(2).max(50),
-  exercises: z.array(
-    z.object({
-      id: z.number().optional(),
-      name: z.string().min(2).max(20),
-      muscle: z.string().min(2).max(20),
-      sets: z.number().min(1).max(5),
-      reps: z.number().min(1).max(30),
-    }),
-  ),
-});
-
 type MuscleComboboxProps = {
   value: string;
   setValue: UseFormSetValue<z.infer<typeof formSchema>>;
@@ -67,17 +54,11 @@ export function MuscleCombobox({ value, setValue }: MuscleComboboxProps) {
       <PopoverContent className="w-fit p-0">
         <ScrollArea className="h-64">
           <Command>
-            <CommandInput placeholder="Search language..." />
-            <CommandEmpty>No language found.</CommandEmpty>
+            <CommandInput placeholder="Busque por um grupo muscular..." />
+            <CommandEmpty>Não achei.</CommandEmpty>
             <CommandGroup>
               {muscles.map((muscle) => (
-                <CommandItem
-                  value={muscle.label}
-                  key={muscle.value}
-                  onSelect={() => {
-                    setValue("exercises.0.muscle", muscle.value);
-                  }}
-                >
+                <CommandItem value={muscle.label} key={muscle.value} onSelect={() => setValue("muscle", muscle.value)}>
                   <Check className={cn("mr-2 h-4 w-4", muscle.value === value ? "opacity-100" : "opacity-0")} />
                   {muscle.label}
                 </CommandItem>
