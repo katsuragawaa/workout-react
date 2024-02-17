@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { UseFormSetValue } from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "./exercise-dialog-form";
+import { exerciseFormSchema } from "./exercise-dialog-form";
 import { ScrollArea } from "./ui/scroll-area";
 
 const muscles = [
@@ -33,7 +33,7 @@ const muscles = [
 
 type MuscleComboboxProps = {
   value: string;
-  setValue: UseFormSetValue<z.infer<typeof formSchema>>;
+  setValue: UseFormSetValue<z.infer<typeof exerciseFormSchema>>;
 };
 
 export function MuscleCombobox({ value, setValue }: MuscleComboboxProps) {

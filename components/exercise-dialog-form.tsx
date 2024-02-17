@@ -8,7 +8,7 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { MuscleCombobox } from "./muscle-combobox";
 
-export const formSchema = z.object({
+export const exerciseFormSchema = z.object({
   name: z.string().min(2).max(50),
   muscle: z.string().min(2).max(50),
   sets: z.number().min(1).max(5),
@@ -16,8 +16,8 @@ export const formSchema = z.object({
 });
 
 export const ExerciseDialogForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof exerciseFormSchema>>({
+    resolver: zodResolver(exerciseFormSchema),
     defaultValues: {
       name: "",
       muscle: "",
