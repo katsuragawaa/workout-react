@@ -44,7 +44,7 @@ export const ExerciseDialogForm = ({ exercise, children }: ExerciseDialogFormPro
     setOpen(open);
   };
 
-  const addExercise = () => {
+  const onSubmit = () => {
     console.log("addExercise");
     setOpen(false);
   };
@@ -54,7 +54,7 @@ export const ExerciseDialogForm = ({ exercise, children }: ExerciseDialogFormPro
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(addExercise)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium">Novo exercício</h3>
