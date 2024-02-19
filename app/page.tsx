@@ -1,5 +1,5 @@
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { WorkoutCard } from "@/components/workout-card";
 import { cn } from "@/lib/utils";
 import { workouts } from "@/lib/workout-mock";
@@ -28,7 +28,7 @@ export default function Home() {
         </section>
 
         <Link href="/workout/new" className={cn(buttonVariants(), "mt-10")}>
-          New workout
+          Novo Treino
         </Link>
       </main>
     </>

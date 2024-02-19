@@ -1,43 +1,50 @@
 "use client";
 
-import { MuscleCombobox } from "@/components/muscle-combobox";
+import { DeleteAlertDialog } from "@/components/delete-alert-dialog";
+import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
+import { ExerciseItem } from "@/components/exercise-item";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { exercises } from "@/lib/workout-mock";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Pencil } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
+import { WorkoutDialogForm } from "@/components/workout-dialog-form";
+import { exercises, workouts } from "@/lib/workout-mock";
+import { Workout } from "@/types";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { ArrowLeft, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { Fragment } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useState } from "react";
 
-const formSchema = z.object({
-  title: z.string().min(2).max(50),
-  exercises: z.array(
-    z.object({
-      id: z.number().optional(),
-      name: z.string().min(2).max(20),
-      muscle: z.string().min(2).max(20),
-      sets: z.number().min(1).max(5),
-      reps: z.number().min(1).max(30),
-    }),
-  ),
-});
+type WorkoutData = Omit<Workout, "id" | "description">;
+
+const defaultWorkout = { name: "" };
 
 export default function NewWorkout() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      exercises: exercises,
-    },
-  });
+  const [openWorkoutForm, setOpenWorkoutForm] = useState(false);
+  const [openExerciseForm, setOpenExerciseForm] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData>(defaultWorkout);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  const handleEdit = (workout: WorkoutData) => {
+    setOpenWorkoutForm(true);
+    setSelectedWorkout(workout);
+  };
+
+  const handleNew = () => {
+    setOpenWorkoutForm(true);
+    setSelectedWorkout(defaultWorkout);
+  };
+
+  const handleDelete = (workout: WorkoutData) => {
+    setOpenAlert(true);
+  };
+
+  const confirmDelete = () => {
+    console.log("delete");
+  };
 
   return (
     <>
@@ -48,145 +55,58 @@ export default function NewWorkout() {
       </header>
 
       <main className="container flex max-w-xl flex-col py-10">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-medium">Workout</h3>
-                <p className="text-sm text-muted-foreground">Plan your workout.</p>
+        <h1 className="text-4xl font-extrabold">Plano de treino</h1>
+        <p className="pb-6 text-sm text-muted-foreground">Planeje seu treco</p>
+
+        <Accordion type="single" collapsible>
+          {workouts.map((workout) => (
+            <AccordionItem key={workout.id || workout.name} value={workout.name}>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <AccordionTrigger className="w-full pb-4 text-start text-2xl font-bold">
+                    {workout.name}
+                  </AccordionTrigger>
+                </div>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <MoreVertical className="h-4 w-4" />
+                      <span className="sr-only">More</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => handleEdit(workout)} className="flex items-center gap-2">
+                      <Pencil className="h-3 w-3" />
+                      Editar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDelete(workout)} className="flex items-center gap-2">
+                      <Trash2 className="h-3 w-3" />
+                      Deletar
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
-
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Treino A" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Separator />
-
-              <div>
-                <h3 className="text-lg font-medium">Exercises</h3>
-                <p className="text-sm text-muted-foreground">Workout activities.</p>
-              </div>
-
-              <div className="space-y-2">
-                <Separator />
-                {exercises.map((exercise, index) => (
-                  <Fragment key={exercise.id}>
-                    <div key={exercise.id} className="flex flex-row items-center justify-between gap-2 p-0">
-                      <div>
-                        <p>{exercise.name}</p>
-                      </div>
-                      <div>
-                        <Button className="h-10 w-10 py-3" variant="outline" size="icon">
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <Separator />
-                  </Fragment>
+              <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {exercises.map((exercise) => (
+                  <ExerciseItem key={exercise.id} exercise={exercise} />
                 ))}
-              </div>
 
-              <div className="h-96 border-t">zero ideias de como deve ser esse form T---T</div>
+                <Button onClick={() => setOpenExerciseForm(true)} variant="secondary" className="md:col-span-2">
+                  Novo exercício
+                </Button>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
 
-              {form.getValues("exercises").map((exercise, index) => (
-                <Fragment key={exercise.id || index}>
-                  <FormField
-                    control={form.control}
-                    name={`exercises.${index}.name`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Exercise name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Supino reto" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+        <Button onClick={handleNew} className="mt-10">
+          Novo treino
+        </Button>
 
-                  <FormField
-                    control={form.control}
-                    name="exercises.0.muscle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Músculo</FormLabel>
-                        <div>
-                          <MuscleCombobox value={field.value} setValue={form.setValue} />
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name={`exercises.${index}.sets`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Sets</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="3"
-                              {...field}
-                              onChange={(event) => {
-                                field.onChange(Number(event.currentTarget.value));
-                              }}
-                              onFocus={(event) => {
-                                event.currentTarget.select();
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`exercises.${index}.reps`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Reps</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="10"
-                              {...field}
-                              onChange={(event) => {
-                                field.onChange(Number(event.currentTarget.value));
-                              }}
-                              onFocus={(event) => {
-                                event.currentTarget.select();
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </Fragment>
-              ))}
-            </div>
-
-            <div className="pt-4">
-              <Button type="submit" className="w-full">
-                Submit
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <WorkoutDialogForm open={openWorkoutForm} setOpen={setOpenWorkoutForm} workout={selectedWorkout} />
+        <ExerciseDialogForm open={openExerciseForm} setOpen={setOpenExerciseForm} />
+        <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
       </main>
     </>
   );

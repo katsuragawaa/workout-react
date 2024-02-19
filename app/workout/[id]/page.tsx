@@ -12,7 +12,7 @@ type WorkoutPageProps = {
 
 export default function Workout({ params }: WorkoutPageProps) {
   const { id } = params;
-  const workout = workouts.find((workout) => workout.id === Number(id)) || { title: "Workout not found" };
+  const workout = workouts.find((workout) => workout.id === Number(id)) || { name: "Workout not found" };
 
   const Trigger = <Button className="mt-10">Descansar</Button>;
   const IconTrigger = (
@@ -32,7 +32,7 @@ export default function Workout({ params }: WorkoutPageProps) {
       </header>
 
       <main className="container flex max-w-2xl flex-col py-10">
-        <h1 className="text-5xl font-extrabold">{workout.title}</h1>
+        <h1 className="text-5xl font-extrabold">{workout.name}</h1>
 
         <div className="grid grid-cols-1 gap-3 pt-10 md:grid-cols-2">
           {exercises.map((exercise) => (

@@ -1,5 +1,6 @@
 "use client";
 
+import { Exercise } from "@/types";
 import { CheckSquare, Repeat2, Square, Weight, X } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "./ui/badge";
@@ -7,17 +8,10 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 type ExerciseCardProps = {
-  exercise: {
-    id: number;
-    name: string;
-    muscle: string;
-    sets: number;
-    reps: number;
-    weight: number;
-  };
+  exercise: Exercise;
 };
 
-export function ExerciseCard({ exercise }: ExerciseCardProps) {
+export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   const [done, setDone] = useState(false);
 
   const toggleDone = () => {
@@ -51,4 +45,4 @@ export function ExerciseCard({ exercise }: ExerciseCardProps) {
       </CardContent>
     </Card>
   );
-}
+};
