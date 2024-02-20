@@ -1,8 +1,7 @@
 type Workout = {
-  id: number;
+  id?: number;
   name: string;
-  description: string;
-  // exercises: Exercise[];
+  description?: string; // TODO: remove this
 };
 
 type Exercise = {
@@ -12,6 +11,7 @@ type Exercise = {
   sets: number;
   reps: number;
   weight: number;
+  workoutId?: number;
 };
 
 export type { Workout, Exercise };
