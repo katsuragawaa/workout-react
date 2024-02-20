@@ -9,15 +9,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-type WorkoutData = Omit<Workout, "id" | "description">;
-
 type WorkoutDialogFormProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  workout?: WorkoutData;
+  onSubmit: (values: z.infer<typeof formSchema>) => void;
+  workout?: Workout;
 };
 
 const formSchema = z.object({
+  id: z.number().optional(),
   name: z.string().min(2).max(50),
 });
 
@@ -25,12 +25,10 @@ const defaultWorkout = {
   name: "",
 };
 
-export const WorkoutDialogForm = ({ open, setOpen, workout }: WorkoutDialogFormProps) => {
-  const { name } = workout || defaultWorkout;
-
+export const WorkoutDialogForm = ({ open, setOpen, onSubmit, workout }: WorkoutDialogFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    values: { name },
+    values: workout || defaultWorkout,
   });
 
   const toggleDialog = (open: boolean) => {
@@ -38,8 +36,8 @@ export const WorkoutDialogForm = ({ open, setOpen, workout }: WorkoutDialogFormP
     setOpen(open);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    onSubmit(values);
     form.reset();
     setOpen(false);
   };
@@ -48,7 +46,7 @@ export const WorkoutDialogForm = ({ open, setOpen, workout }: WorkoutDialogFormP
     <Dialog open={open} onOpenChange={toggleDialog}>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium">Workout</h3>
