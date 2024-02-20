@@ -5,20 +5,16 @@ import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
 import { ExerciseItem } from "@/components/exercise-item";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { toast } from "@/components/ui/use-toast";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
-import { exercises, workouts } from "@/lib/workout-mock";
+import * as db from "@/lib/db-mock";
+import { exercises } from "@/lib/workout-mock";
 import { Workout } from "@/types";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ArrowLeft, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-
-type WorkoutData = Omit<Workout, "id" | "description">;
 
 const defaultWorkout = { name: "" };
 
@@ -26,24 +22,35 @@ export default function NewWorkout() {
   const [openWorkoutForm, setOpenWorkoutForm] = useState(false);
   const [openExerciseForm, setOpenExerciseForm] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData>(defaultWorkout);
+  const [selectedWorkout, setSelectedWorkout] = useState<Workout>(defaultWorkout);
+  const [workoutId, setWorkoutId] = useState<number>(-1);
 
-  const handleEdit = (workout: WorkoutData) => {
+  const workouts = db.getWorkouts();
+
+  const handleFormOpen = (workout: Workout) => {
     setOpenWorkoutForm(true);
     setSelectedWorkout(workout);
   };
 
-  const handleNew = () => {
-    setOpenWorkoutForm(true);
-    setSelectedWorkout(defaultWorkout);
+  const handleSubmit = (workout: Workout) => {
+    workout.id === undefined ? db.addWorkout(workout) : db.editWorkoutById(workout.id, workout);
   };
 
-  const handleDelete = (workout: WorkoutData) => {
+  const handleDelete = (workout: Workout) => {
+    if (workout.id === undefined) {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was an error deleting the workout.",
+      });
+      return;
+    }
+
     setOpenAlert(true);
+    setWorkoutId(workout.id);
   };
 
   const confirmDelete = () => {
-    console.log("delete");
+    db.deleteWorkoutById(workoutId);
   };
 
   return (
@@ -76,7 +83,7 @@ export default function NewWorkout() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => handleEdit(workout)} className="flex items-center gap-2">
+                    <DropdownMenuItem onClick={() => handleFormOpen(workout)} className="flex items-center gap-2">
                       <Pencil className="h-3 w-3" />
                       Editar
                     </DropdownMenuItem>
@@ -100,11 +107,16 @@ export default function NewWorkout() {
           ))}
         </Accordion>
 
-        <Button onClick={handleNew} className="mt-10">
+        <Button onClick={() => handleFormOpen(defaultWorkout)} className="mt-10">
           Novo treino
         </Button>
 
-        <WorkoutDialogForm open={openWorkoutForm} setOpen={setOpenWorkoutForm} workout={selectedWorkout} />
+        <WorkoutDialogForm
+          open={openWorkoutForm}
+          setOpen={setOpenWorkoutForm}
+          workout={selectedWorkout}
+          onSubmit={handleSubmit}
+        />
         <ExerciseDialogForm open={openExerciseForm} setOpen={setOpenExerciseForm} />
         <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
       </main>
