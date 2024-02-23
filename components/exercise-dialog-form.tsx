@@ -1,20 +1,21 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Exercise } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { MuscleCombobox } from "./muscle-combobox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-
-type ExerciseData = Omit<Exercise, "id">;
+import { ulid } from "ulidx";
 
 type ExerciseDialogFormProps = {
-  exercise?: ExerciseData;
+  exercise?: Exercise;
   open: boolean;
   setOpen: (open: boolean) => void;
+  setExercise: (exercise: Exercise) => void;
 };
 
 export const exerciseFormSchema = z.object({
@@ -31,7 +32,7 @@ const defaultExercise = {
   reps: 0,
 };
 
-export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFormProps) => {
+export const ExerciseDialogForm = ({ exercise, setExercise, open, setOpen }: ExerciseDialogFormProps) => {
   const { name, muscle, sets, reps } = exercise || defaultExercise;
 
   const form = useForm<z.infer<typeof exerciseFormSchema>>({
@@ -45,7 +46,7 @@ export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFo
   };
 
   const onSubmit = () => {
-    console.log("addExercise");
+    setExercise({ id: exercise?.id || ulid(), ...form.getValues(), weight: 0 });
     form.reset();
     setOpen(false);
   };

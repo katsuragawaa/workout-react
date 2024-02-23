@@ -1,12 +1,14 @@
+import { UUID } from "crypto";
+
 type Workout = {
-  id: number;
+  id: string;
   name: string;
-  description: string;
-  // exercises: Exercise[];
+  description?: string;
+  exercises?: Exercise[];
 };
 
 type Exercise = {
-  id: number;
+  id: string;
   name: string;
   muscle: string;
   sets: number;

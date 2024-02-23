@@ -6,15 +6,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Workout } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ulid } from "ulidx";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-type WorkoutData = Omit<Workout, "id" | "description">;
 
 type WorkoutDialogFormProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  workout?: WorkoutData;
+  workout?: Workout;
+  setWorkout: (workout: Workout) => void;
 };
 
 const formSchema = z.object({
@@ -23,9 +23,11 @@ const formSchema = z.object({
 
 const defaultWorkout = {
   name: "",
+  exercises: [],
+  description: "",
 };
 
-export const WorkoutDialogForm = ({ open, setOpen, workout }: WorkoutDialogFormProps) => {
+export const WorkoutDialogForm = ({ open, setOpen, workout, setWorkout }: WorkoutDialogFormProps) => {
   const { name } = workout || defaultWorkout;
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,7 +41,7 @@ export const WorkoutDialogForm = ({ open, setOpen, workout }: WorkoutDialogFormP
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    setWorkout({ id: workout?.id || ulid(), ...workout, ...values });
     form.reset();
     setOpen(false);
   };
