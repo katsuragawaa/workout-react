@@ -2,20 +2,13 @@
 
 import { DeleteAlertDialog } from "@/components/delete-alert-dialog";
 import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
-import { ExerciseItem } from "@/components/exercise-item";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { toast } from "@/components/ui/use-toast";
+import { WorkoutAccordion } from "@/components/workout-accordion";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
 import * as db from "@/lib/db-mock";
-import { Exercise, Workout } from "@/types";
-import { ArrowLeft, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { Exercise, ExerciseData, WorkoutData } from "@/types";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -26,7 +19,7 @@ export default function NewWorkout() {
   const [openExerciseForm, setOpenExerciseForm] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
 
-  const [selectedWorkout, setSelectedWorkout] = useState<Workout>(defaultWorkout);
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData>(defaultWorkout);
   const [workoutId, setWorkoutId] = useState<number>(-1);
   const [exercises, setExercises] = useState<Exercise[]>([]);
 
@@ -37,7 +30,7 @@ export default function NewWorkout() {
     setExercises(e);
   };
 
-  const openWorkout = (workout: Workout) => {
+  const openWorkout = (workout: WorkoutData) => {
     setOpenWorkoutForm(true);
     setSelectedWorkout(workout);
   };
@@ -47,11 +40,11 @@ export default function NewWorkout() {
     setWorkoutId(workoutId);
   };
 
-  const submitWorkout = (workout: Workout) => {
+  const submitWorkout = (workout: WorkoutData) => {
     workout.id === undefined ? db.saveWorkout(workout) : db.updateWorkoutById(workout.id, workout);
   };
 
-  const deleteWorkout = (workout: Workout) => {
+  const deleteWorkout = (workout: WorkoutData) => {
     if (workout.id === undefined) {
       return toast({
         title: "Uh oh! Something went wrong.",
@@ -67,7 +60,7 @@ export default function NewWorkout() {
     db.deleteWorkoutById(workoutId);
   };
 
-  const submitExercise = (exercise: Exercise) => {
+  const submitExercise = (exercise: ExerciseData) => {
     exercise.id === undefined ? db.saveExercise(exercise) : db.updateExerciseById(exercise.id, exercise);
     loadExercises(exercise.workoutId);
   };
@@ -84,52 +77,15 @@ export default function NewWorkout() {
         <h1 className="text-4xl font-extrabold">Plano de treino</h1>
         <p className="pb-6 text-sm text-muted-foreground">Planeje seu treco</p>
 
-        <Accordion type="single" collapsible onValueChange={(v) => loadExercises(Number(v))}>
-          {workouts.map((workout) => (
-            <AccordionItem key={workout.id || workout.name} value={String(workout.id)}>
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <AccordionTrigger className="w-full pb-4 text-start text-2xl font-bold">
-                    {workout.name}
-                  </AccordionTrigger>
-                </div>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <MoreVertical className="h-4 w-4" />
-                      <span className="sr-only">More</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => openWorkout(workout)} className="flex items-center gap-2">
-                      <Pencil className="h-3 w-3" />
-                      Editar
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => deleteWorkout(workout)} className="flex items-center gap-2">
-                      <Trash2 className="h-3 w-3" />
-                      Deletar
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                {exercises.map((exercise) => (
-                  <ExerciseItem
-                    key={exercise.id}
-                    exercise={exercise}
-                    workoutId={workout.id}
-                    onSubmit={submitExercise}
-                  />
-                ))}
-
-                <Button onClick={() => openExercise(workout.id)} variant="secondary" className="md:col-span-2">
-                  Novo exercício
-                </Button>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <WorkoutAccordion
+          workouts={workouts}
+          openWorkout={openWorkout}
+          deleteWorkout={deleteWorkout}
+          exercises={exercises}
+          loadExercises={loadExercises}
+          openExercise={openExercise}
+          submitExercise={submitExercise}
+        />
 
         <Button onClick={() => openWorkout(defaultWorkout)} className="mt-10">
           Novo treino

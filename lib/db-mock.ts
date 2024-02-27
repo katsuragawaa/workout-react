@@ -1,16 +1,4 @@
-type Workout = {
-  id: number;
-  name: string;
-};
-
-type Exercise = {
-  id: number;
-  name: string;
-  muscle: string;
-  sets: number;
-  reps: number;
-  workoutId: number;
-};
+import { Exercise, Workout } from "@/types";
 
 const workouts: Workout[] = [];
 const exercises: Exercise[] = [];

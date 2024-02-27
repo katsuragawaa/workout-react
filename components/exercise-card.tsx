@@ -1,6 +1,6 @@
 "use client";
 
-import { Exercise } from "@/types";
+import { ExerciseWithWeight } from "@/types";
 import { CheckSquare, Repeat2, Square, Weight, X } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "./ui/badge";
@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 type ExerciseCardProps = {
-  exercise: Exercise;
+  exercise: ExerciseWithWeight;
 };
 
 export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {

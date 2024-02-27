@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Exercise } from "@/types";
+import { ExerciseData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,11 +9,11 @@ import { MuscleCombobox } from "./muscle-combobox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 
 type ExerciseDialogFormProps = {
-  exercise?: Exercise;
+  exercise?: ExerciseData;
   workoutId: number;
   open: boolean;
   setOpen: (open: boolean) => void;
-  onSubmit: (exercise: Exercise) => void;
+  onSubmit: (exercise: ExerciseData) => void;
 };
 
 export const exerciseFormSchema = z.object({

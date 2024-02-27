@@ -1,4 +1,4 @@
-import { Exercise } from "@/types";
+import { ExerciseData } from "@/types";
 import { Beef, Minus, MoreVertical, Pencil, Repeat2, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { DeleteAlertDialog } from "./delete-alert-dialog";
@@ -6,12 +6,10 @@ import { ExerciseDialogForm } from "./exercise-dialog-form";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
-type ExerciseData = Omit<Exercise, "id">;
-
 type ExerciseItemProps = {
   exercise: ExerciseData;
   workoutId: number;
-  onSubmit: (exercise: Exercise) => void;
+  onSubmit: (exercise: ExerciseData) => void;
 };
 
 const ExerciseDetails = ({ name, muscle, sets, reps }: ExerciseData) => (
