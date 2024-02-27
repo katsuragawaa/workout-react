@@ -5,13 +5,16 @@ import { ExerciseDialogForm } from "@/components/exercise-dialog-form";
 import { ExerciseItem } from "@/components/exercise-item";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "@/components/ui/use-toast";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
 import * as db from "@/lib/db-mock";
-import { exercises } from "@/lib/workout-mock";
-import { Workout } from "@/types";
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Exercise, Workout } from "@/types";
 import { ArrowLeft, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -22,10 +25,17 @@ export default function NewWorkout() {
   const [openWorkoutForm, setOpenWorkoutForm] = useState(false);
   const [openExerciseForm, setOpenExerciseForm] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+
   const [selectedWorkout, setSelectedWorkout] = useState<Workout>(defaultWorkout);
   const [workoutId, setWorkoutId] = useState<number>(-1);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
 
   const workouts = db.getWorkouts();
+
+  const loadExercises = (workoutId: number) => {
+    const e = db.getExercisesByWorkout(workoutId);
+    setExercises(e);
+  };
 
   const handleFormOpen = (workout: Workout) => {
     setOpenWorkoutForm(true);
@@ -33,7 +43,7 @@ export default function NewWorkout() {
   };
 
   const handleSubmit = (workout: Workout) => {
-    workout.id === undefined ? db.addWorkout(workout) : db.editWorkoutById(workout.id, workout);
+    workout.id === undefined ? db.saveWorkout(workout) : db.updateWorkoutById(workout.id, workout);
   };
 
   const handleDelete = (workout: Workout) => {
@@ -53,6 +63,11 @@ export default function NewWorkout() {
     db.deleteWorkoutById(workoutId);
   };
 
+  const handleExerciseFormSubmit = (exercise: Omit<Exercise, "id">) => {
+    db.saveExercise(exercise);
+    loadExercises(exercise.workoutId);
+  };
+
   return (
     <>
       <header className="container flex max-w-4xl items-center justify-between pt-14">
@@ -65,9 +80,9 @@ export default function NewWorkout() {
         <h1 className="text-4xl font-extrabold">Plano de treino</h1>
         <p className="pb-6 text-sm text-muted-foreground">Planeje seu treco</p>
 
-        <Accordion type="single" collapsible>
+        <Accordion type="single" collapsible onValueChange={(v) => loadExercises(Number(v))}>
           {workouts.map((workout) => (
-            <AccordionItem key={workout.id || workout.name} value={workout.name}>
+            <AccordionItem key={workout.id || workout.name} value={String(workout.id)}>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
                   <AccordionTrigger className="w-full pb-4 text-start text-2xl font-bold">
@@ -99,7 +114,14 @@ export default function NewWorkout() {
                   <ExerciseItem key={exercise.id} exercise={exercise} />
                 ))}
 
-                <Button onClick={() => setOpenExerciseForm(true)} variant="secondary" className="md:col-span-2">
+                <Button
+                  onClick={() => {
+                    setOpenExerciseForm(true);
+                    setWorkoutId(workout.id);
+                  }}
+                  variant="secondary"
+                  className="md:col-span-2"
+                >
                   Novo exercício
                 </Button>
               </AccordionContent>
@@ -117,7 +139,12 @@ export default function NewWorkout() {
           workout={selectedWorkout}
           onSubmit={handleSubmit}
         />
-        <ExerciseDialogForm open={openExerciseForm} setOpen={setOpenExerciseForm} />
+        <ExerciseDialogForm
+          open={openExerciseForm}
+          setOpen={setOpenExerciseForm}
+          onSubmit={handleExerciseFormSubmit}
+          workoutId={workoutId}
+        />
         <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
       </main>
     </>

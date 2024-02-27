@@ -9,7 +9,6 @@ type Exercise = {
   muscle: string;
   sets: number;
   reps: number;
-  weight: number;
   workoutId: number;
 };
 
@@ -69,13 +68,13 @@ const deleteExerciseById = (exerciseId: number) => {
 };
 
 export {
-  saveExercise as addExercise,
-  saveWorkout as addWorkout,
+  saveExercise,
+  saveWorkout,
   deleteExerciseById,
   deleteWorkoutById,
   getExercises,
   getExercisesByWorkout,
   getWorkouts,
-  updateExerciseById as editExerciseById,
-  updateWorkoutById as editWorkoutById,
+  updateExerciseById,
+  updateWorkoutById,
 };

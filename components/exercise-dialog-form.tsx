@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Exercise } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { MuscleCombobox } from "./muscle-combobox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 
-type ExerciseData = Omit<Exercise, "id">;
-
 type ExerciseDialogFormProps = {
-  exercise?: ExerciseData;
+  exercise?: Exercise;
+  workoutId: number;
   open: boolean;
   setOpen: (open: boolean) => void;
+  onSubmit: (exercise: Exercise) => void;
 };
 
 export const exerciseFormSchema = z.object({
+  workoutId: z.number(),
   name: z.string().min(2).max(50),
   muscle: z.string().min(2).max(50),
   sets: z.number().min(1).max(5),
@@ -31,12 +31,12 @@ const defaultExercise = {
   reps: 0,
 };
 
-export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFormProps) => {
+export const ExerciseDialogForm = ({ exercise, workoutId, open, setOpen, onSubmit }: ExerciseDialogFormProps) => {
   const { name, muscle, sets, reps } = exercise || defaultExercise;
 
   const form = useForm<z.infer<typeof exerciseFormSchema>>({
     resolver: zodResolver(exerciseFormSchema),
-    values: { name, muscle, sets, reps },
+    values: { workoutId, name, muscle, sets, reps },
   });
 
   const toggleOpen = (open: boolean) => {
@@ -44,8 +44,8 @@ export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFo
     setOpen(open);
   };
 
-  const onSubmit = () => {
-    console.log("addExercise");
+  const handleSubmit = (values: z.infer<typeof exerciseFormSchema>) => {
+    onSubmit(values);
     form.reset();
     setOpen(false);
   };
@@ -54,7 +54,7 @@ export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFo
     <Dialog open={open} onOpenChange={toggleOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium">Novo exercício</h3>

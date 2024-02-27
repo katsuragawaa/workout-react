@@ -5,13 +5,13 @@ type Workout = {
 };
 
 type Exercise = {
-  id: number;
+  id?: number;
+  workoutId: number;
   name: string;
   muscle: string;
   sets: number;
   reps: number;
-  weight: number;
-  workoutId?: number;
+  weight?: number;
 };
 
 export type { Workout, Exercise };
