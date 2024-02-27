@@ -48,11 +48,10 @@ export default function NewWorkout() {
 
   const deleteWorkout = (workout: Workout) => {
     if (workout.id === undefined) {
-      toast({
+      return toast({
         title: "Uh oh! Something went wrong.",
         description: "There was an error deleting the workout.",
       });
-      return;
     }
 
     setOpenAlert(true);
