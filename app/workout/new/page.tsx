@@ -37,9 +37,14 @@ export default function NewWorkout() {
     setExercises(e);
   };
 
-  const openForm = (workout: Workout) => {
+  const openWorkout = (workout: Workout) => {
     setOpenWorkoutForm(true);
     setSelectedWorkout(workout);
+  };
+
+  const openExercise = (workoutId: number) => {
+    setOpenExerciseForm(true);
+    setWorkoutId(workoutId);
   };
 
   const submitWorkout = (workout: Workout) => {
@@ -62,8 +67,8 @@ export default function NewWorkout() {
     db.deleteWorkoutById(workoutId);
   };
 
-  const submitExercise = (exercise: Omit<Exercise, "id">) => {
-    db.saveExercise(exercise);
+  const submitExercise = (exercise: Exercise) => {
+    exercise.id === undefined ? db.saveExercise(exercise) : db.updateExerciseById(exercise.id, exercise);
     loadExercises(exercise.workoutId);
   };
 
@@ -97,7 +102,7 @@ export default function NewWorkout() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => openForm(workout)} className="flex items-center gap-2">
+                    <DropdownMenuItem onClick={() => openWorkout(workout)} className="flex items-center gap-2">
                       <Pencil className="h-3 w-3" />
                       Editar
                     </DropdownMenuItem>
@@ -110,17 +115,15 @@ export default function NewWorkout() {
               </div>
               <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 {exercises.map((exercise) => (
-                  <ExerciseItem key={exercise.id} exercise={exercise} />
+                  <ExerciseItem
+                    key={exercise.id}
+                    exercise={exercise}
+                    workoutId={workout.id}
+                    onSubmit={submitExercise}
+                  />
                 ))}
 
-                <Button
-                  onClick={() => {
-                    setOpenExerciseForm(true);
-                    setWorkoutId(workout.id);
-                  }}
-                  variant="secondary"
-                  className="md:col-span-2"
-                >
+                <Button onClick={() => openExercise(workout.id)} variant="secondary" className="md:col-span-2">
                   Novo exercício
                 </Button>
               </AccordionContent>
@@ -128,7 +131,7 @@ export default function NewWorkout() {
           ))}
         </Accordion>
 
-        <Button onClick={() => openForm(defaultWorkout)} className="mt-10">
+        <Button onClick={() => openWorkout(defaultWorkout)} className="mt-10">
           Novo treino
         </Button>
 

@@ -17,6 +17,7 @@ type ExerciseDialogFormProps = {
 };
 
 export const exerciseFormSchema = z.object({
+  id: z.number().optional(),
   workoutId: z.number(),
   name: z.string().min(2).max(50),
   muscle: z.string().min(2).max(50),
@@ -25,6 +26,7 @@ export const exerciseFormSchema = z.object({
 });
 
 const defaultExercise = {
+  id: undefined,
   name: "",
   muscle: "",
   sets: 0,
@@ -32,11 +34,11 @@ const defaultExercise = {
 };
 
 export const ExerciseDialogForm = ({ exercise, workoutId, open, setOpen, onSubmit }: ExerciseDialogFormProps) => {
-  const { name, muscle, sets, reps } = exercise || defaultExercise;
+  const { id, name, muscle, sets, reps } = exercise || defaultExercise;
 
   const form = useForm<z.infer<typeof exerciseFormSchema>>({
     resolver: zodResolver(exerciseFormSchema),
-    values: { workoutId, name, muscle, sets, reps },
+    values: { id, workoutId, name, muscle, sets, reps },
   });
 
   const toggleOpen = (open: boolean) => {
