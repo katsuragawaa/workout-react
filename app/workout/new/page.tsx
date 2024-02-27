@@ -37,16 +37,16 @@ export default function NewWorkout() {
     setExercises(e);
   };
 
-  const handleFormOpen = (workout: Workout) => {
+  const openForm = (workout: Workout) => {
     setOpenWorkoutForm(true);
     setSelectedWorkout(workout);
   };
 
-  const handleSubmit = (workout: Workout) => {
+  const submitWorkout = (workout: Workout) => {
     workout.id === undefined ? db.saveWorkout(workout) : db.updateWorkoutById(workout.id, workout);
   };
 
-  const handleDelete = (workout: Workout) => {
+  const deleteWorkout = (workout: Workout) => {
     if (workout.id === undefined) {
       toast({
         title: "Uh oh! Something went wrong.",
@@ -63,7 +63,7 @@ export default function NewWorkout() {
     db.deleteWorkoutById(workoutId);
   };
 
-  const handleExerciseFormSubmit = (exercise: Omit<Exercise, "id">) => {
+  const submitExercise = (exercise: Omit<Exercise, "id">) => {
     db.saveExercise(exercise);
     loadExercises(exercise.workoutId);
   };
@@ -98,11 +98,11 @@ export default function NewWorkout() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => handleFormOpen(workout)} className="flex items-center gap-2">
+                    <DropdownMenuItem onClick={() => openForm(workout)} className="flex items-center gap-2">
                       <Pencil className="h-3 w-3" />
                       Editar
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDelete(workout)} className="flex items-center gap-2">
+                    <DropdownMenuItem onClick={() => deleteWorkout(workout)} className="flex items-center gap-2">
                       <Trash2 className="h-3 w-3" />
                       Deletar
                     </DropdownMenuItem>
@@ -129,7 +129,7 @@ export default function NewWorkout() {
           ))}
         </Accordion>
 
-        <Button onClick={() => handleFormOpen(defaultWorkout)} className="mt-10">
+        <Button onClick={() => openForm(defaultWorkout)} className="mt-10">
           Novo treino
         </Button>
 
@@ -137,12 +137,12 @@ export default function NewWorkout() {
           open={openWorkoutForm}
           setOpen={setOpenWorkoutForm}
           workout={selectedWorkout}
-          onSubmit={handleSubmit}
+          onSubmit={submitWorkout}
         />
         <ExerciseDialogForm
           open={openExerciseForm}
           setOpen={setOpenExerciseForm}
-          onSubmit={handleExerciseFormSubmit}
+          onSubmit={submitExercise}
           workoutId={workoutId}
         />
         <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
