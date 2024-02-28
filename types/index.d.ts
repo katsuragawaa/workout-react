@@ -1,5 +1,3 @@
-import { UUID } from "crypto";
-
 type Workout = {
   id: string;
   name: string;
