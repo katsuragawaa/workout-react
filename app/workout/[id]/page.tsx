@@ -12,7 +12,7 @@ type WorkoutPageProps = {
 
 export default function Workout({ params }: WorkoutPageProps) {
   const { id } = params;
-  const workout = workouts.find((workout) => workout.id === Number(id)) || { name: "Workout not found" };
+  const workout = workouts.find((workout) => workout.id === id) || { name: "Workout not found" };
 
   const Trigger = <Button className="mt-10">Descansar</Button>;
   const IconTrigger = (
