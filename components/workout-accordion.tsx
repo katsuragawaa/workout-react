@@ -1,3 +1,4 @@
+import * as db from "@/lib/db-mock";
 import { Exercise, ExerciseData, Workout } from "@/types";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { ExerciseItem } from "./exercise-item";
@@ -13,6 +14,7 @@ type WorkoutAccordionProps = {
   openExercise: (workoutId: number) => void;
   loadExercises: (workoutId: number) => void;
   submitExercise: (exercise: ExerciseData) => void;
+  deleteExercise: (exercise: Exercise) => void;
 };
 
 export const WorkoutAccordion = ({
@@ -23,6 +25,7 @@ export const WorkoutAccordion = ({
   openExercise,
   loadExercises,
   submitExercise,
+  deleteExercise,
 }: WorkoutAccordionProps) => {
   return (
     <Accordion type="single" collapsible onValueChange={(v) => loadExercises(Number(v))}>
@@ -54,7 +57,13 @@ export const WorkoutAccordion = ({
           </div>
           <AccordionContent className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {exercises.map((exercise) => (
-              <ExerciseItem key={exercise.id} exercise={exercise} workoutId={workout.id} onSubmit={submitExercise} />
+              <ExerciseItem
+                key={exercise.id}
+                exercise={exercise}
+                workoutId={workout.id}
+                onSubmit={submitExercise}
+                onDelete={() => deleteExercise(exercise)}
+              />
             ))}
 
             <Button onClick={() => openExercise(workout.id)} variant="secondary" className="md:col-span-2">

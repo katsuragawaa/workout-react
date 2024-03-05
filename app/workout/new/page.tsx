@@ -56,13 +56,17 @@ export default function NewWorkout() {
     setWorkoutId(workout.id);
   };
 
-  const confirmDelete = () => {
+  const confirmDeleteWorkout = () => {
     db.deleteWorkoutById(workoutId);
   };
 
   const submitExercise = (exercise: ExerciseData) => {
     exercise.id === undefined ? db.saveExercise(exercise) : db.updateExerciseById(exercise.id, exercise);
     loadExercises(exercise.workoutId);
+  };
+
+  const deleteExercise = (exercise: Exercise) => {
+    db.deleteExerciseById(exercise.id);
   };
 
   return (
@@ -85,6 +89,7 @@ export default function NewWorkout() {
           loadExercises={loadExercises}
           openExercise={openExercise}
           submitExercise={submitExercise}
+          deleteExercise={deleteExercise}
         />
 
         <Button onClick={() => openWorkout(defaultWorkout)} className="mt-10">
@@ -103,7 +108,7 @@ export default function NewWorkout() {
           onSubmit={submitExercise}
           workoutId={workoutId}
         />
-        <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
+        <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDeleteWorkout} />
       </main>
     </>
   );

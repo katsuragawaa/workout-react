@@ -1,4 +1,5 @@
-import { ExerciseData } from "@/types";
+import { Exercise, ExerciseData } from "@/types";
+import * as db from "@/lib/db-mock";
 import { Beef, Minus, MoreVertical, Pencil, Repeat2, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { DeleteAlertDialog } from "./delete-alert-dialog";
@@ -7,9 +8,10 @@ import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 type ExerciseItemProps = {
-  exercise: ExerciseData;
+  exercise: Exercise;
   workoutId: number;
   onSubmit: (exercise: ExerciseData) => void;
+  onDelete: () => void;
 };
 
 const ExerciseDetails = ({ name, muscle, sets, reps }: ExerciseData) => (
@@ -33,13 +35,9 @@ const ExerciseDetails = ({ name, muscle, sets, reps }: ExerciseData) => (
   </div>
 );
 
-export const ExerciseItem = ({ exercise, workoutId, onSubmit }: ExerciseItemProps) => {
+export const ExerciseItem = ({ exercise, workoutId, onSubmit, onDelete }: ExerciseItemProps) => {
   const [openForm, setOpenForm] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-
-  const confirmDelete = () => {
-    console.log("delete exercise");
-  };
 
   return (
     <div className="flex flex-col justify-center rounded-md border p-4">
@@ -72,7 +70,7 @@ export const ExerciseItem = ({ exercise, workoutId, onSubmit }: ExerciseItemProp
           workoutId={workoutId}
           exercise={exercise}
         />
-        <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={confirmDelete} />
+        <DeleteAlertDialog open={openAlert} setOpen={setOpenAlert} onConfirm={onDelete} />
       </div>
     </div>
   );
