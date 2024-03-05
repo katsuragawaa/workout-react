@@ -67,6 +67,7 @@ export default function NewWorkout() {
 
   const deleteExercise = (exercise: Exercise) => {
     db.deleteExerciseById(exercise.id);
+    loadExercises(exercise.workoutId);
   };
 
   return (
