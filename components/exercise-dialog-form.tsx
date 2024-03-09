@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { muscles } from "@/lib/muscles";
 import { ExerciseData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +21,9 @@ export const exerciseFormSchema = z.object({
   id: z.number().optional(),
   workoutId: z.number(),
   name: z.string().min(2).max(50),
-  muscle: z.string().min(2).max(50),
+  muscle: z.string().refine((value) => muscles.some((muscle) => muscle.value === value), {
+    message: "You must select a valid option",
+  }),
   sets: z.number().min(1).max(5),
   reps: z.number().min(1).max(30),
 });
