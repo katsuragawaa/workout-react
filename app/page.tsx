@@ -1,16 +1,20 @@
+"use client";
+
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { WorkoutCard } from "@/components/workout-card";
-import * as db from "@/lib/db-mock";
+import { useWorkouts } from "@/hooks/use-workouts";
 import { cn } from "@/lib/utils";
 import { Workout } from "@/types";
 import Link from "next/link";
 
 export default function Home() {
-  const workouts = db.getWorkouts();
+  const { getWorkouts, getExercisesByWorkoutId } = useWorkouts();
+
+  const workouts = getWorkouts();
 
   const workoutDetails = (workout: Workout) => {
-    const exercises = db.getExercisesByWorkout(workout.id);
+    const exercises = getExercisesByWorkoutId(workout.id);
     const muscles = Array.from(new Set(exercises.map((e) => e.muscle)));
 
     return { ...workout, description: muscles.join(", ") };

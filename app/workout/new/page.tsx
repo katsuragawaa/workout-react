@@ -6,7 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { WorkoutAccordion } from "@/components/workout-accordion";
 import { WorkoutDialogForm } from "@/components/workout-dialog-form";
-import * as db from "@/lib/db-mock";
+import { useWorkouts } from "@/hooks/use-workouts";
 import { Exercise, ExerciseData, WorkoutData } from "@/types";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -23,10 +23,21 @@ export default function NewWorkout() {
   const [workoutId, setWorkoutId] = useState<number>(-1);
   const [exercises, setExercises] = useState<Exercise[]>([]);
 
-  const workouts = db.getWorkouts();
+  const {
+    getWorkouts,
+    saveWorkout,
+    updateWorkout,
+    deleteWorkout,
+    getExercisesByWorkoutId,
+    saveExercise,
+    updateExercise,
+    deleteExercise,
+  } = useWorkouts();
+
+  const workouts = getWorkouts();
 
   const loadExercises = (workoutId: number) => {
-    const e = db.getExercisesByWorkout(workoutId);
+    const e = getExercisesByWorkoutId(workoutId);
     setExercises(e);
   };
 
@@ -41,10 +52,10 @@ export default function NewWorkout() {
   };
 
   const submitWorkout = (workout: WorkoutData) => {
-    workout.id === undefined ? db.saveWorkout(workout) : db.updateWorkoutById(workout.id, workout);
+    workout.id === undefined ? saveWorkout(workout) : updateWorkout(workout.id, workout);
   };
 
-  const deleteWorkout = (workout: WorkoutData) => {
+  const deleteWorkoutHandler = (workout: WorkoutData) => {
     if (workout.id === undefined) {
       return toast({
         title: "Uh oh! Something went wrong.",
@@ -57,16 +68,16 @@ export default function NewWorkout() {
   };
 
   const confirmDeleteWorkout = () => {
-    db.deleteWorkoutById(workoutId);
+    deleteWorkout(workoutId);
   };
 
   const submitExercise = (exercise: ExerciseData) => {
-    exercise.id === undefined ? db.saveExercise(exercise) : db.updateExerciseById(exercise.id, exercise);
+    exercise.id === undefined ? saveExercise(exercise) : updateExercise(exercise.id, exercise);
     loadExercises(exercise.workoutId);
   };
 
-  const deleteExercise = (exercise: Exercise) => {
-    db.deleteExerciseById(exercise.id);
+  const deleteExerciseHandler = (exercise: Exercise) => {
+    deleteExercise(exercise.id);
     loadExercises(exercise.workoutId);
   };
 
@@ -85,12 +96,12 @@ export default function NewWorkout() {
         <WorkoutAccordion
           workouts={workouts}
           openWorkout={openWorkout}
-          deleteWorkout={deleteWorkout}
+          deleteWorkout={deleteWorkoutHandler}
           exercises={exercises}
           loadExercises={loadExercises}
           openExercise={openExercise}
           submitExercise={submitExercise}
-          deleteExercise={deleteExercise}
+          deleteExercise={deleteExerciseHandler}
         />
 
         <Button onClick={() => openWorkout(defaultWorkout)} className="mt-10">
