@@ -1,7 +1,7 @@
 "use client";
 
 import { Exercise, Workout } from "@/types";
-import { useLocalStorage } from "./use-local-storage";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 export const useWorkouts = () => {
   const [workouts, setWorkouts] = useLocalStorage("workouts", [] as Workout[]);
