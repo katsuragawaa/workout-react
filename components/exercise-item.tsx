@@ -1,5 +1,4 @@
 import { Exercise, ExerciseData } from "@/types";
-import * as db from "@/lib/db-mock";
 import { Beef, Minus, MoreVertical, Pencil, Repeat2, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { DeleteAlertDialog } from "./delete-alert-dialog";
