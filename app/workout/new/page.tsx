@@ -21,25 +21,18 @@ export default function NewWorkout() {
 
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData>(defaultWorkout);
   const [workoutId, setWorkoutId] = useState<number>(-1);
-  const [exercises, setExercises] = useState<Exercise[]>([]);
 
   const {
     getWorkouts,
     saveWorkout,
     updateWorkout,
     deleteWorkout,
-    getExercisesByWorkoutId,
     saveExercise,
     updateExercise,
     deleteExercise,
   } = useWorkouts();
 
   const workouts = getWorkouts();
-
-  const loadExercises = (workoutId: number) => {
-    const e = getExercisesByWorkoutId(workoutId);
-    setExercises(e);
-  };
 
   const openWorkout = (workout: WorkoutData) => {
     setOpenWorkoutForm(true);
@@ -73,12 +66,10 @@ export default function NewWorkout() {
 
   const submitExercise = (exercise: ExerciseData) => {
     exercise.id === undefined ? saveExercise(exercise) : updateExercise(exercise.id, exercise);
-    loadExercises(exercise.workoutId);
   };
 
   const deleteExerciseHandler = (exercise: Exercise) => {
     deleteExercise(exercise.id);
-    loadExercises(exercise.workoutId);
   };
 
   return (
@@ -97,8 +88,6 @@ export default function NewWorkout() {
           workouts={workouts}
           openWorkout={openWorkout}
           deleteWorkout={deleteWorkoutHandler}
-          exercises={exercises}
-          loadExercises={loadExercises}
           openExercise={openExercise}
           submitExercise={submitExercise}
           deleteExercise={deleteExerciseHandler}
