@@ -1,18 +1,35 @@
+"use client";
+
 import { ExerciseCard } from "@/components/exercise-card";
 import { TimerDrawer } from "@/components/timer-drawer";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { useWorkouts } from "@/hooks/use-workouts";
 import { cn } from "@/lib/utils";
-import { exercises, workouts } from "@/lib/workout-mock";
 import { ArrowLeft, Timer } from "lucide-react";
 import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 
 type WorkoutPageProps = {
   params: { id: string };
 };
 
 export default function Workout({ params }: WorkoutPageProps) {
+  const router = useRouter();
+
   const { id } = params;
-  const workout = workouts.find((workout) => workout.id === Number(id)) || { name: "Workout not found" };
+  const { getWorkoutById, getExercisesByWorkoutId } = useWorkouts();
+
+  const workout = getWorkoutById(Number(id));
+  if (workout === undefined) {
+    router.push("/404"); // TODO: use a proper error page
+    return null;
+  }
+
+  const exercises = getExercisesByWorkoutId(workout.id);
+
+  // TODO: implement a way to set the weight
+  const exercisesW = exercises.map((e) => ({ ...e, weight: 10 }));
 
   const Trigger = <Button className="mt-10">Descansar</Button>;
   const IconTrigger = (
@@ -35,7 +52,7 @@ export default function Workout({ params }: WorkoutPageProps) {
         <h1 className="text-5xl font-extrabold">{workout.name}</h1>
 
         <div className="grid grid-cols-1 gap-3 pt-10 md:grid-cols-2">
-          {exercises.map((exercise) => (
+          {exercisesW.map((exercise) => (
             <ExerciseCard key={exercise.id} exercise={exercise} />
           ))}
         </div>

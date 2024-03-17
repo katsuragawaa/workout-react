@@ -6,10 +6,10 @@ export const workouts = [
 ];
 
 export const exercises = [
-  { id: 101, name: "Supino reto", muscle: "chest", sets: 3, reps: 10, weight: 20 },
-  { id: 102, name: "Puxada frente aberta pra quebrar linha", muscle: "back", sets: 3, reps: 10, weight: 34 },
-  { id: 103, name: "Leg press", muscle: "quadriceps", sets: 3, reps: 10, weight: 100 },
-  { id: 104, name: "Agachamento", muscle: "quadriceps", sets: 3, reps: 10, weight: 60 },
-  { id: 105, name: "Elevação lateral", muscle: "shoulders", sets: 3, reps: 10, weight: 20 },
-  { id: 106, name: "Biceps curl", muscle: "biceps", sets: 3, reps: 10, weight: 8 },
+  { id: 101, workoutId: 1, name: "Supino reto", muscle: "chest", sets: 3, reps: 10, weight: 20 },
+  { id: 102, workoutId: 1, name: "Puxada frente aberta pra quebrar linha", muscle: "back", sets: 3, reps: 10, weight: 34 },
+  { id: 103, workoutId: 2, name: "Leg press", muscle: "quadriceps", sets: 3, reps: 10, weight: 100 },
+  { id: 104, workoutId: 3, name: "Agachamento", muscle: "quadriceps", sets: 3, reps: 10, weight: 60 },
+  { id: 105, workoutId: 3, name: "Elevação lateral", muscle: "shoulders", sets: 3, reps: 10, weight: 20 },
+  { id: 106, workoutId: 4, name: "Biceps curl", muscle: "biceps", sets: 3, reps: 10, weight: 8 },
 ];

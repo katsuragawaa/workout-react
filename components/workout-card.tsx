@@ -6,7 +6,7 @@ import { buttonVariants } from "./ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 type WorkoutCardProps = {
-  workout: Workout;
+  workout: Workout & { description: string };
 };
 
 export function WorkoutCard({ workout }: WorkoutCardProps) {

@@ -1,11 +1,25 @@
+"use client";
+
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { WorkoutCard } from "@/components/workout-card";
+import { useWorkouts } from "@/hooks/use-workouts";
 import { cn } from "@/lib/utils";
-import { workouts } from "@/lib/workout-mock";
+import { Workout } from "@/types";
 import Link from "next/link";
 
 export default function Home() {
+  const { getWorkouts, getExercisesByWorkoutId } = useWorkouts();
+
+  const workouts = getWorkouts();
+
+  const workoutDetails = (workout: Workout) => {
+    const exercises = getExercisesByWorkoutId(workout.id);
+    const muscles = Array.from(new Set(exercises.map((e) => e.muscle)));
+
+    return { ...workout, description: muscles.join(", ") };
+  };
+
   return (
     <>
       <header className="container flex max-w-4xl items-center justify-end pt-14">
@@ -23,7 +37,7 @@ export default function Home() {
 
         <section className="flex flex-col gap-4">
           {workouts.map((workout) => (
-            <WorkoutCard key={workout.id} workout={workout} />
+            <WorkoutCard key={workout.id} workout={workoutDetails(workout)} />
           ))}
         </section>
 

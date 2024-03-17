@@ -1,42 +1,47 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Exercise } from "@/types";
+import { muscles } from "@/lib/muscles";
+import { ExerciseData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { MuscleCombobox } from "./muscle-combobox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 
-type ExerciseData = Omit<Exercise, "id">;
-
 type ExerciseDialogFormProps = {
   exercise?: ExerciseData;
+  workoutId: number;
   open: boolean;
   setOpen: (open: boolean) => void;
+  onSubmit: (exercise: ExerciseData) => void;
 };
 
 export const exerciseFormSchema = z.object({
+  id: z.number().optional(),
+  workoutId: z.number(),
   name: z.string().min(2).max(50),
-  muscle: z.string().min(2).max(50),
+  muscle: z.string().refine((value) => muscles.some((muscle) => muscle.value === value), {
+    message: "You must select a valid option",
+  }),
   sets: z.number().min(1).max(5),
   reps: z.number().min(1).max(30),
 });
 
 const defaultExercise = {
+  id: undefined,
   name: "",
   muscle: "",
   sets: 0,
   reps: 0,
 };
 
-export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFormProps) => {
-  const { name, muscle, sets, reps } = exercise || defaultExercise;
+export const ExerciseDialogForm = ({ exercise, workoutId, open, setOpen, onSubmit }: ExerciseDialogFormProps) => {
+  const { id, name, muscle, sets, reps } = exercise || defaultExercise;
 
   const form = useForm<z.infer<typeof exerciseFormSchema>>({
     resolver: zodResolver(exerciseFormSchema),
-    values: { name, muscle, sets, reps },
+    values: { id, workoutId, name, muscle, sets, reps },
   });
 
   const toggleOpen = (open: boolean) => {
@@ -44,8 +49,8 @@ export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFo
     setOpen(open);
   };
 
-  const onSubmit = () => {
-    console.log("addExercise");
+  const handleSubmit = (values: z.infer<typeof exerciseFormSchema>) => {
+    onSubmit(values);
     form.reset();
     setOpen(false);
   };
@@ -54,7 +59,7 @@ export const ExerciseDialogForm = ({ exercise, open, setOpen }: ExerciseDialogFo
     <Dialog open={open} onOpenChange={toggleOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium">Novo exercício</h3>
